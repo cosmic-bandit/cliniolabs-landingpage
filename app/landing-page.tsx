@@ -55,7 +55,7 @@ const IntegrationsBeam = () => {
   const rightBottom2Ref = useRef<HTMLDivElement>(null)
 
   return (
-    <div ref={containerRef} className="relative flex h-[500px] w-full items-center justify-center gap-24 overflow-hidden rounded-lg border bg-background p-10 shadow-xl">
+    <div ref={containerRef} className="relative flex h-[500px] w-full items-center justify-center gap-32 overflow-hidden rounded-lg border bg-background p-10 shadow-xl">
       {/* Animated Beams - 2 Left to Center, Center to 4 Right */}
       {/* Left-Side Beams (2 inputs -> Center) */}
       <AnimatedBeam
