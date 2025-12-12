@@ -1,0 +1,44 @@
+import type React from "react"
+import type { Metadata, Viewport } from "next"
+import { Funnel_Display } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import "./globals.css"
+
+const funnelDisplay = Funnel_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+})
+
+export const metadata: Metadata = {
+  title: "ClinicAI - Klinikler için AI Destekli Hasta Yönetim Platformu",
+  description:
+    "WhatsApp üzerinden 7/24 hasta danışmanlığı, AI fotoğraf analizi, otomatik fiyatlandırma ve randevu yönetimi. Saç ekimi klinikleri için AI otomasyon platformu.",
+  generator: "v0.app",
+  icons: {
+    icon: [
+      {
+        url: "/logos/cliniolabs-favicon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#059669",
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="tr">
+      <body className={`${funnelDisplay.className} antialiased`}>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  )
+}
