@@ -16,6 +16,7 @@ import { AnimatedList } from "@/components/ui/animated-list"
 import { Meteors } from "@/components/ui/meteors"
 import { Button } from "@/components/ui/button"
 import { AnimatedBeam, Circle } from "@/components/ui/animated-beam"
+import { GlowingEffect } from "@/components/ui/glowing-effect"
 
 // Dot Grid Pattern Background Component
 const DotPattern = () => (
@@ -832,7 +833,7 @@ export default function LandingPage() {
             </a>
           </div>
           <Button className="hidden md:flex bg-gray-900 hover:bg-gray-800 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors items-center gap-2 text-sm">
-            Demo Başlat
+            Ücretsiz deneyin
             <ChevronRight className="w-4 h-4" />
           </Button>
           <div className="md:hidden">
@@ -1044,6 +1045,7 @@ export default function LandingPage() {
 
             {/* Card 1: Otopilot Hasta Yönetimi - Full width mobile, 2 cols desktop */}
             <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <GlowingEffect spread={60} glow={true} proximity={80} />
               <Image
                 src="/images/2x/cliniolabs-hasta-yonetim.webp"
                 alt="Otopilot Hasta Yönetimi"
@@ -1066,6 +1068,7 @@ export default function LandingPage() {
 
             {/* Card 2: Tıbbi Düzeyde Fotoğraf Analizi - Full width mobile, 3 cols desktop */}
             <div className="min-h-[500px] md:min-h-0 md:col-span-3 md:row-span-4 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <GlowingEffect spread={80} glow={true} proximity={100} />
               <Image
                 src="/images/2x/cliniolabs-foto-analiz.webp"
                 alt="Tıbbi Düzeyde Fotoğraf Analizi"
@@ -1090,6 +1093,7 @@ export default function LandingPage() {
 
             {/* Card 3: Akıllı Triaj & Ön Eleme - Full width mobile, 3 cols desktop */}
             <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <GlowingEffect spread={60} glow={true} proximity={80} />
               <Image
                 src="/images/2x/cliniolabs-smart-filter.webp"
                 alt="Akıllı Triaj & Ön Eleme"
@@ -1114,6 +1118,7 @@ export default function LandingPage() {
 
             {/* Card 4: Otomatik Arşivleme - Full width mobile, 2 cols desktop */}
             <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <GlowingEffect spread={60} glow={true} proximity={80} />
               <Image
                 src="/images/2x/cliniolabs-oto-arsiv.webp"
                 alt="Otomatik Arşivleme"
@@ -1136,6 +1141,7 @@ export default function LandingPage() {
 
             {/* Card 5: İkna Edici Satış Asistanı - Full width mobile, 3 cols desktop */}
             <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <GlowingEffect spread={60} glow={true} proximity={80} />
               <Image
                 src="/images/2x/cliniolabs-persona.webp"
                 alt="İkna Edici Satış Asistanı Personası"
@@ -1187,6 +1193,7 @@ export default function LandingPage() {
 
             {/* RIGHT TOP: Bağlantı Card - Full width mobile, 5 cols desktop */}
             <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+              <GlowingEffect spread={70} glow={true} proximity={90} />
               <Image
                 src="/images/2x/cliniolabs-baglantı.webp"
                 alt="Bağlantı"
@@ -1210,6 +1217,7 @@ export default function LandingPage() {
 
             {/* LEFT BOTTOM: Veri İşleme Card - Full width mobile, 7 cols desktop */}
             <div className="min-h-[400px] md:min-h-0 md:col-span-7 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+              <GlowingEffect spread={80} glow={true} proximity={100} />
               <Image
                 src="/images/2x/cliniolabs-veri-isleme.webp"
                 alt="Veri İşleme"
@@ -1233,6 +1241,7 @@ export default function LandingPage() {
 
             {/* RIGHT BOTTOM: Sonuç Card - Full width mobile, 5 cols desktop */}
             <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+              <GlowingEffect spread={70} glow={true} proximity={90} />
               <Image
                 src="/images/2x/cliniolabs-sonuc.webp"
                 alt="Sonuç"
@@ -1301,7 +1310,7 @@ export default function LandingPage() {
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">Herkes için basit fiyatlandırma.</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
               Kitlenizle etkileşim kurmak, müşteri sadakati oluşturmak ve satışları artırmak için{" "}
-              <span className="font-semibold text-gray-900">uygun fiyatlı bir plan</span> seçin.
+              <span className="font-semibold text-gray-900">size uygun bir plan</span> seçin.
             </p>
 
             <div className="inline-flex items-center gap-3">
@@ -1318,7 +1327,7 @@ export default function LandingPage() {
               </button>
               <span className="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
                 <span className="bg-black text-white px-2 py-1 rounded text-xs font-semibold uppercase tracking-wide">
-                  2 Ay Ücretsiz
+                  İlk Hafta Ücretsiz
                 </span>
               </span>
             </div>
@@ -1568,7 +1577,7 @@ export default function LandingPage() {
             </div>
 
             {/* Copyright */}
-            <p className="text-sm text-gray-500">Copyright © 2025 ClinicAI. Tüm hakları saklıdır.</p>
+            <p className="text-sm text-gray-500">Copyright © 2025 Cliniolabs. Tüm hakları saklıdır.</p>
           </div>
         </div>
       </footer>
