@@ -1,10 +1,10 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Funnel_Display } from "next/font/google"
+import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const funnelDisplay = Funnel_Display({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 })
@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <body className={`${funnelDisplay.className} antialiased`}>
+      <body className={`${inter.className} antialiased`}>
         {children}
         <Analytics />
       </body>

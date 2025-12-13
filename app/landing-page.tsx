@@ -5,12 +5,6 @@ import Image from "next/image"
 
 import { useState, useEffect, useRef, useId } from "react"
 import {
-  Camera,
-  ChatCircle,
-  CalendarCheck,
-  ChartLine,
-  Globe,
-  Images,
   Link as LinkIcon, // Renamed to avoid conflict with next/link
   Gear,
   RocketLaunch,
@@ -570,35 +564,43 @@ const WhatsAppDesktopMockup = ({
   )
 }
 
-// Feature Card Component with Grid Background
+// Feature Card Component - Exact Reference Design Match
 const FeatureCard = ({
-  icon: Icon,
+  imageSrc,
   title,
   description,
-  accent,
 }: {
-  icon: React.ElementType
+  imageSrc: string
   title: string
   description: string
-  accent: string
 }) => {
-  const accentClasses: Record<string, string> = {
-    cyan: "bg-cyan-50 text-cyan-600 border-cyan-200",
-    emerald: "bg-emerald-50 text-emerald-600 border-emerald-200",
-    blue: "bg-blue-50 text-blue-600 border-blue-200",
-    purple: "bg-purple-50 text-purple-600 border-purple-200",
-    orange: "bg-orange-50 text-orange-600 border-orange-200",
-    rose: "bg-rose-50 text-rose-600 border-rose-200",
-  }
-
   return (
-    <div className="relative bg-gradient-to-b from-gray-50 to-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-      <Grid size={20} />
-      <div className={`relative z-20 w-12 h-12 rounded-xl border ${accentClasses[accent]} flex items-center justify-center mb-4`}>
-        <Icon size={24} weight="light" />
+    <div className="group relative bg-[#F8F7F4] border border-gray-200/40 rounded-[32px] p-10 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+      {/* Expand Icon - Top Right - Very Subtle */}
+      <div className="absolute top-8 right-8 w-5 h-5 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
+          <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
+          <path d="m21 3-9 9" />
+          <path d="M15 3h6v6" />
+        </svg>
       </div>
-      <h3 className="relative z-20 text-lg font-bold text-gray-800 mb-2">{title}</h3>
-      <p className="relative z-20 text-sm text-gray-600 leading-relaxed">{description}</p>
+
+      {/* Large 3D Icon Image */}
+      <div className="mb-8 w-32 h-32 relative flex items-center justify-start">
+        <Image
+          src={imageSrc}
+          alt={title}
+          width={128}
+          height={128}
+          className="object-contain"
+        />
+      </div>
+
+      {/* Title - Larger and Bolder */}
+      <h3 className="text-[22px] font-bold text-gray-900 mb-3 leading-tight pr-10">{title}</h3>
+
+      {/* Description - Smaller and More Subtle */}
+      <p className="text-[14px] text-gray-600 leading-relaxed opacity-80">{description}</p>
     </div>
   )
 }
@@ -799,7 +801,7 @@ export default function LandingPage() {
 
       {/* Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white ${isScrolled ? "shadow-sm" : ""}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 bg-white ${isScrolled ? "shadow-sm" : ""}`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -842,25 +844,25 @@ export default function LandingPage() {
                     <div className="space-y-1">
                       <a
                         href="#features"
-                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-[color,background-color] duration-200 font-medium"
                       >
                         Özellikler
                       </a>
                       <a
                         href="#how-it-works"
-                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-[color,background-color] duration-200 font-medium"
                       >
                         Nasıl Çalışır
                       </a>
                       <a
                         href="#testimonials"
-                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-[color,background-color] duration-200 font-medium"
                       >
                         Referanslar
                       </a>
                       <a
                         href="#pricing"
-                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-[color,background-color] duration-200 font-medium"
                       >
                         Fiyatlandırma
                       </a>
@@ -879,7 +881,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen pt-32 pb-8 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-screen pt-32 pb-0 overflow-hidden">
         <DotPattern />
 
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-emerald-400/20 rounded-full blur-[100px] pointer-events-none" />
@@ -897,7 +899,7 @@ export default function LandingPage() {
 
               <h1 className="flex flex-col mb-8 text-left">
                 <span
-                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-all duration-150 whitespace-nowrap"
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-[filter,opacity] duration-150 whitespace-nowrap will-change-[filter,opacity]"
                   style={{
                     opacity: heroLine1Opacity,
                     filter: `blur(${heroLine1Blur}px)`,
@@ -906,7 +908,7 @@ export default function LandingPage() {
                   Kliniğiniz uyurken bile
                 </span>
                 <span
-                  className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] gradient-text-green-blue transition-all duration-150"
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] gradient-text-green-blue transition-[filter,opacity] duration-150 will-change-[filter,opacity]"
                   style={{
                     opacity: heroLine2Opacity,
                     filter: `blur(${heroLine2Blur}px)`,
@@ -915,7 +917,7 @@ export default function LandingPage() {
                   çalışan akıllı asistan
                 </span>
                 <span
-                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-all duration-150"
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-[filter,opacity] duration-150 will-change-[filter,opacity]"
                   style={{
                     opacity: heroLine1Opacity,
                     filter: `blur(${heroLine1Blur}px)`,
@@ -954,7 +956,7 @@ export default function LandingPage() {
                   WhatsApp üzerinden 7/24 hasta danışmanlığı, AI fotoğraf analizi, otomatik fiyatlandırma ve randevu
                   yönetimi. Tek platformda.
                 </p>
-                <button className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-emerald-500/25">
+                <button className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold px-8 py-4 rounded-xl transition-[background-color,transform] duration-200 shadow-lg shadow-emerald-500/25 hover:scale-105">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                   </svg>
@@ -967,18 +969,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section ref={mockupSectionRef} className="relative min-h-[700px] bg-white overflow-hidden -mt-8">
+      <section ref={mockupSectionRef} className="relative min-h-[700px] bg-white overflow-hidden -mt-32">
         <DotPattern />
 
         <div className="relative max-w-7xl mx-auto px-6 h-full">
           <div className="relative flex items-center justify-center h-[650px]">
             {/* Mobile Mockup - LEFT side, moves RIGHT on scroll */}
             <div
-              className="absolute transition-all duration-300 ease-out z-20"
+              className="absolute transition-transform duration-300 ease-out z-20 will-change-transform"
               style={{
-                left: `calc(5% - ${mockupOffset}px)`,
+                left: "5%",
                 top: "50%",
-                transform: "translateY(-50%)",
+                transform: `translate3d(-${mockupOffset}px, -50%, 0)`,
               }}
             >
               <WhatsAppMobileMockup activeContact={activeContact} />
@@ -986,11 +988,11 @@ export default function LandingPage() {
 
             {/* Desktop Mockup - RIGHT side, moves LEFT on scroll */}
             <div
-              className="absolute transition-all duration-300 ease-out z-10"
+              className="absolute transition-transform duration-300 ease-out z-10 will-change-transform"
               style={{
-                right: `calc(0% - ${mockupOffset}px)`,
+                right: "0%",
                 top: "50%",
-                transform: "translateY(-50%)",
+                transform: `translate3d(${mockupOffset}px, -50%, 0)`,
               }}
             >
               <WhatsAppDesktopMockup activeContact={activeContact} onContactSelect={setActiveContact} />
@@ -1000,7 +1002,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="relative py-32 bg-gray-50/50">
+      <section id="features" className="relative pt-12 pb-0 bg-gray-50/50">
         <DotPattern />
 
         <div className="relative max-w-7xl mx-auto px-6">
@@ -1014,88 +1016,236 @@ export default function LandingPage() {
 
           <IntegrationsBeam />
 
-          {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <FeatureCard
-              icon={Camera}
-              title="AI Fotoğraf Analizi"
-              description="Hasta fotoğraflarından Norwood seviyesi, greft tahmini ve uygun teknik önerisi. Saniyeler içinde profesyonel değerlendirme."
-              accent="cyan"
-            />
-            <FeatureCard
-              icon={ChatCircle}
-              title="WhatsApp Entegrasyonu"
-              description="7/24 otomatik yanıt sistemi. Türkçe, İngilizce, Arapça ve Rusça dil desteği ile global hasta erişimi."
-              accent="emerald"
-            />
-            <FeatureCard
-              icon={CalendarCheck}
-              title="Akıllı Randevu"
-              description="Hasta ikna olduğunda otomatik randevu oluşturma. Google Calendar ve Sheets entegrasyonu."
-              accent="blue"
-            />
-            <FeatureCard
-              icon={ChartLine}
-              title="Canlı Raporlama"
-              description="Dönüşüm oranları, gelir takibi ve hasta analitiği. Gerçek zamanlı performans metrikleri."
-              accent="purple"
-            />
-            <FeatureCard
-              icon={Globe}
-              title="Çoklu Dil Desteği"
-              description="Hasta hangi dilde yazarsa yazsın, AI aynı dilde yanıt verir. 50+ ülkeden hasta desteği."
-              accent="orange"
-            />
-            <FeatureCard
-              icon={Images}
-              title="Before/After Galeri"
-              description="Benzer vakaları otomatik eşleştirme. Her hastaya kişiselleştirilmiş örnek fotoğraflar."
-              accent="rose"
-            />
+          {/* Bento Grid - 12 Columns x 6 Rows with explicit heights */}
+          <div
+            className="grid grid-cols-12 gap-4 mt-16"
+            style={{
+              gridTemplateRows: 'repeat(6, 100px)'
+            }}
+          >
+
+            {/* Title & Text Block - 4 Columns x 4 Rows (doubled height) */}
+            <div className="col-span-4 row-span-4 bg-white rounded-3xl p-8 flex flex-col justify-start">
+              <h3 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                Kliniğinizin<br />Yeni Dijital Beyni
+              </h3>
+              <p className="text-base text-gray-600 leading-relaxed">
+                Manuel işleri bırakın, yapay zeka 7/24 sizin yerinize çalışsın, analiz etsin ve kaydetsin.
+              </p>
+            </div>
+
+            {/* Card 1: Otopilot Hasta Yönetimi - 2 cols, 2 rows (doubled) */}
+            <div className="col-span-2 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <Image
+                src="/images/2x/cliniolabs-hasta-yonetim.webp"
+                alt="Otopilot Hasta Yönetimi"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-6 flex flex-col justify-start">
+                <h4 className="text-lg font-bold text-gray-900 mb-3">Otopilot<br />Hasta Yönetimi</h4>
+                <div className="flex justify-start">
+                  <Image
+                    src="/images/2x/expand-icon.svg"
+                    alt="Expand"
+                    width={24}
+                    height={24}
+                    className="opacity-100"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Tıbbi Düzeyde Fotoğraf Analizi - 3 cols, 4 rows (doubled) - BÜYÜK KART */}
+            <div className="col-span-3 row-span-4 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <Image
+                src="/images/2x/cliniolabs-foto-analiz.webp"
+                alt="Tıbbi Düzeyde Fotoğraf Analizi"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                <div className="flex items-end gap-4">
+                  <h4 className="text-2xl font-bold text-gray-900 leading-tight flex-[4]">Tıbbi Düzeyde<br />Fotoğraf Analizi</h4>
+                  <div className="flex-[1] flex justify-end">
+                    <Image
+                      src="/images/2x/expand-icon.svg"
+                      alt="Expand"
+                      width={28}
+                      height={28}
+                      className="opacity-100"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Akıllı Triaj & Ön Eleme - 3 cols, 2 rows (doubled) */}
+            <div className="col-span-3 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <Image
+                src="/images/2x/cliniolabs-smart-filter.webp"
+                alt="Akıllı Triaj & Ön Eleme"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-6 flex flex-col justify-end">
+                <div className="flex items-end gap-4">
+                  <h4 className="text-lg font-bold text-gray-900 flex-[4]">Akıllı<br />Triaj & Ön Eleme</h4>
+                  <div className="flex-[1] flex justify-end">
+                    <Image
+                      src="/images/2x/expand-icon.svg"
+                      alt="Expand"
+                      width={24}
+                      height={24}
+                      className="opacity-100"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4: Otomatik Arşivleme - 2 cols, 2 rows (doubled) */}
+            <div className="col-span-2 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <Image
+                src="/images/2x/cliniolabs-oto-arsiv.webp"
+                alt="Otomatik Arşivleme"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-6 flex flex-col justify-start">
+                <h4 className="text-lg font-bold text-gray-900 mb-3">Otomatik<br />Arşivleme</h4>
+                <div className="flex justify-start">
+                  <Image
+                    src="/images/2x/expand-icon.svg"
+                    alt="Expand"
+                    width={24}
+                    height={24}
+                    className="opacity-100"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Card 5: İkna Edici Satış Asistanı - 3 cols, 2 rows (doubled) */}
+            <div className="col-span-3 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+              <Image
+                src="/images/2x/cliniolabs-persona.webp"
+                alt="İkna Edici Satış Asistanı Personası"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-6 flex flex-col justify-end">
+                <div className="flex items-end gap-4">
+                  <h4 className="text-lg font-bold text-gray-900 flex-[4]">İkna Edici Satış<br />Asistanı Personası</h4>
+                  <div className="flex-[1] flex justify-end">
+                    <Image
+                      src="/images/2x/expand-icon.svg"
+                      alt="Expand"
+                      width={24}
+                      height={24}
+                      className="opacity-100"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="relative py-32">
+      {/* How It Works Section - 12 Column Grid Layout */}
+      <section id="how-it-works" className="relative py-12">
         <DotPattern />
 
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-sm font-semibold text-emerald-600 uppercase tracking-wider">Nasıl Çalışır</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">3 Adımda Başlayın</h2>
-          </div>
+          {/* 12 Column Grid: 7 (Left) + 5 (Right) */}
+          <div
+            className="grid grid-cols-12 gap-4"
+            style={{
+              gridTemplateRows: 'repeat(6, 70px)'
+            }}
+          >
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                step: "01",
-                title: "Bağlantı",
-                desc: "WhatsApp Business hesabınızı bağlayın. 5 dakikada entegrasyon tamamlanır.",
-                Icon: LinkIcon, // Use the renamed LinkIcon
-              },
-              {
-                step: "02",
-                title: "Kişiselleştirme",
-                desc: "Klinik bilgilerinizi, fiyatlarınızı ve before/after fotoğraflarınızı yükleyin.",
-                Icon: Gear,
-              },
-              {
-                step: "03",
-                title: "Başlat",
-                desc: "AI asistanınız 7/24 çalışmaya başlasın. Siz sadece randevuları onaylayın.",
-                Icon: RocketLaunch,
-              },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="w-20 h-20 mx-auto mb-6 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-center">
-                  <item.Icon size={36} weight="light" className="text-emerald-600" />
+            {/* LEFT: Title & Text - 7 Columns, 3 Rows - Card Style */}
+            <div className="col-span-7 row-span-3 bg-white rounded-3xl p-8 flex flex-col justify-start">
+              <h2 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Dakikalar İçinde Kurulur,<br />Saniyeler İçinde Yanıtlar
+              </h2>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Karmaşık entegrasyonlar yok. WhatsApp ve Google hattınızı bağlayın, gerisini AI halletsin.
+              </p>
+            </div>
+
+            {/* RIGHT TOP: Bağlantı Card - 5 Columns, 3 Rows */}
+            <div className="col-span-5 row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+              <Image
+                src="/images/2x/cliniolabs-baglantı.webp"
+                alt="Bağlantı"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-6 flex flex-col justify-start">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Bağlantı</h3>
+                    <p className="text-2xl font-semibold text-gray-700 leading-7">
+                      Hasta WhatsApp hattınıza yazar<br />veya fotoğraf gönderir.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/90 border-2 border-gray-900 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg font-bold text-gray-900">2</span>
+                  </div>
                 </div>
-                <span className="text-4xl font-bold text-emerald-600/20">{item.step}</span>
-                <h3 className="text-xl font-bold text-gray-800 mt-2 mb-3">{item.title}</h3>
-                <p className="text-gray-600">{item.desc}</p>
               </div>
-            ))}
+            </div>
+
+            {/* LEFT BOTTOM: Veri İşleme Card - 7 Columns, 3 Rows (same as Sonuç) */}
+            <div className="col-span-7 row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+              <Image
+                src="/images/2x/cliniolabs-veri-isleme.webp"
+                alt="Veri İşleme"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-8 flex flex-col justify-start">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Veri İşleme</h3>
+                    <p className="text-2xl font-semibold text-gray-700 leading-7 max-w-md">
+                      AI motorumuz görseli analiz eder, greft hesaplar, kliniğinizin fiyat politikasına göre yanıt hazırlar.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/90 border-2 border-gray-900 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg font-bold text-gray-900">1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT BOTTOM: Sonuç Card - 5 Columns, 3 Rows */}
+            <div className="col-span-5 row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+              <Image
+                src="/images/2x/cliniolabs-sonuc.webp"
+                alt="Sonuç"
+                fill
+                className="object-cover z-0"
+              />
+              <div className="absolute inset-0 z-20 p-6 flex flex-col justify-start">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Sonuç</h3>
+                    <p className="text-2xl font-semibold text-gray-700 leading-7">
+                      Hasta analizi cebine gelir, tüm<br />veriler anında klinik panelinize işlenir.
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/90 border-2 border-gray-900 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg font-bold text-gray-900">3</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -1175,7 +1325,7 @@ export default function LandingPage() {
                 <span className="text-4xl font-bold text-gray-900">{prices.starter.toLocaleString("tr-TR")}₺</span>
                 <span className="text-gray-500 text-lg"> / ay</span>
               </div>
-              <button className="w-full py-3 bg-[#333333] text-white rounded-2xl font-semibold transition-all hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
+              <button className="w-full py-3 bg-[#333333] text-white rounded-2xl font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
                 Abone Ol
               </button>
               <ul className="space-y-4">
@@ -1196,7 +1346,7 @@ export default function LandingPage() {
                 <span className="text-4xl font-bold text-gray-900">{prices.pro.toLocaleString("tr-TR")}₺</span>
                 <span className="text-gray-500 text-lg"> / ay</span>
               </div>
-              <button className="w-full py-3 bg-[#333333] text-white rounded-2xl font-semibold transition-all hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
+              <button className="w-full py-3 bg-[#333333] text-white rounded-2xl font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
                 Abone Ol
               </button>
               <ul className="space-y-4">
@@ -1223,7 +1373,7 @@ export default function LandingPage() {
                 <span className="text-4xl font-bold text-gray-900">{prices.enterprise.toLocaleString("tr-TR")}₺</span>
                 <span className="text-gray-500 text-lg"> / ay</span>
               </div>
-              <button className="w-full py-3 bg-[#333333] text-white rounded-2xl font-semibold transition-all hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
+              <button className="w-full py-3 bg-[#333333] text-white rounded-2xl font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
                 Abone Ol
               </button>
               <ul className="space-y-4">
