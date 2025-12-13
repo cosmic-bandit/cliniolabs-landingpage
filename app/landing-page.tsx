@@ -1417,7 +1417,7 @@ export default function LandingPage() {
               <Phone className="w-5 h-5" />
               +90 552 539 3433
             </button>
-            <button className="inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+            <button className="inline-flex items-center justify-center gap-2 bg-gray-900 border-2 border-white hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors">
               <Mail className="w-5 h-5" />
               Demo Talep Et
             </button>
