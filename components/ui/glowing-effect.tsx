@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface GlowingEffectProps {
     spread?: number;
@@ -18,6 +18,8 @@ export const GlowingEffect: React.FC<GlowingEffectProps> = ({
     inactiveZone = 0.01,
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         if (disabled || !glow) return;
@@ -29,15 +31,25 @@ export const GlowingEffect: React.FC<GlowingEffectProps> = ({
             const rect = container.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
+            setMousePosition({ x, y });
+        };
 
-            container.style.setProperty("--mouse-x", `${x}px`);
-            container.style.setProperty("--mouse-y", `${y}px`);
+        const handleMouseEnter = () => {
+            setIsHovering(true);
+        };
+
+        const handleMouseLeave = () => {
+            setIsHovering(false);
         };
 
         container.addEventListener("mousemove", handleMouseMove);
+        container.addEventListener("mouseenter", handleMouseEnter);
+        container.addEventListener("mouseleave", handleMouseLeave);
 
         return () => {
             container.removeEventListener("mousemove", handleMouseMove);
+            container.removeEventListener("mouseenter", handleMouseEnter);
+            container.removeEventListener("mouseleave", handleMouseLeave);
         };
     }, [disabled, glow]);
 
@@ -46,15 +58,13 @@ export const GlowingEffect: React.FC<GlowingEffectProps> = ({
     return (
         <div
             ref={containerRef}
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl"
-            style={{
-                opacity: 0.5,
-            }}
+            className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none z-10"
         >
             <div
-                className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
+                className="absolute inset-0 transition-opacity duration-300"
                 style={{
-                    background: `radial-gradient(${spread}px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.15), transparent 80%)`,
+                    opacity: isHovering ? 1 : 0,
+                    background: `radial-gradient(${spread}px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(16, 185, 129, 0.2), transparent 70%)`,
                 }}
             />
         </div>
