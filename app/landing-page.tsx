@@ -829,7 +829,7 @@ export default function LandingPage() {
               Fiyatlandırma
             </a>
           </div>
-          <Button className="bg-gray-900 hover:bg-gray-800 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm">
+          <Button className="hidden md:flex bg-gray-900 hover:bg-gray-800 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors items-center gap-2 text-sm">
             Demo Başlat
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -981,11 +981,10 @@ export default function LandingPage() {
 
         <div className="relative max-w-7xl mx-auto px-6 h-full">
           <div className="relative flex items-center justify-center h-[650px]">
-            {/* Mobile Mockup - LEFT side, moves RIGHT on scroll */}
+            {/* Mobile Mockup - Centered on mobile, animated on desktop */}
             <div
-              className="absolute transition-transform duration-300 ease-out z-20 will-change-transform"
+              className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 transition-transform duration-300 ease-out z-20 will-change-transform"
               style={{
-                left: "5%",
                 top: "50%",
                 transform: `translate3d(-${scrollState.mockupOffset}px, -50%, 0)`,
               }}
@@ -1032,7 +1031,7 @@ export default function LandingPage() {
           >
 
             {/* Title & Text Block - Full width mobile, 4 cols desktop */}
-            <div className="min-h-[400px] md:min-h-0 md:col-span-4 md:row-span-4 bg-white rounded-3xl p-8 flex flex-col justify-start">
+            <div className="min-h-[200px] md:min-h-0 md:col-span-4 md:row-span-4 bg-white rounded-3xl p-8 flex flex-col justify-start">
               <h3 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
                 Kliniğinizin<br />Yeni Dijital Beyni
               </h3>
