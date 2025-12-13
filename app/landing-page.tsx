@@ -16,7 +16,6 @@ import { AnimatedList } from "@/components/ui/animated-list"
 import { Meteors } from "@/components/ui/meteors"
 import { Button } from "@/components/ui/button"
 import { AnimatedBeam, Circle } from "@/components/ui/animated-beam"
-import { GlowingEffect } from "@/components/ui/glowing-effect"
 
 // Dot Grid Pattern Background Component
 const DotPattern = () => (
@@ -1044,8 +1043,7 @@ export default function LandingPage() {
             </div>
 
             {/* Card 1: Otopilot Hasta Yönetimi - Full width mobile, 2 cols desktop */}
-            <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
-              <GlowingEffect spread={60} glow={true} proximity={80} />
+            <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-hasta-yonetim.webp"
                 alt="Otopilot Hasta Yönetimi"
@@ -1067,8 +1065,7 @@ export default function LandingPage() {
             </div>
 
             {/* Card 2: Tıbbi Düzeyde Fotoğraf Analizi - Full width mobile, 3 cols desktop */}
-            <div className="min-h-[500px] md:min-h-0 md:col-span-3 md:row-span-4 relative rounded-3xl overflow-hidden group cursor-pointer">
-              <GlowingEffect spread={80} glow={true} proximity={100} />
+            <div className="min-h-[500px] md:min-h-0 md:col-span-3 md:row-span-4 relative rounded-3xl overflow-hidden group cursor-pointer border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-foto-analiz.webp"
                 alt="Tıbbi Düzeyde Fotoğraf Analizi"
@@ -1092,8 +1089,7 @@ export default function LandingPage() {
             </div>
 
             {/* Card 3: Akıllı Triaj & Ön Eleme - Full width mobile, 3 cols desktop */}
-            <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
-              <GlowingEffect spread={60} glow={true} proximity={80} />
+            <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-smart-filter.webp"
                 alt="Akıllı Triaj & Ön Eleme"
@@ -1117,8 +1113,7 @@ export default function LandingPage() {
             </div>
 
             {/* Card 4: Otomatik Arşivleme - Full width mobile, 2 cols desktop */}
-            <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
-              <GlowingEffect spread={60} glow={true} proximity={80} />
+            <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-oto-arsiv.webp"
                 alt="Otomatik Arşivleme"
@@ -1140,8 +1135,7 @@ export default function LandingPage() {
             </div>
 
             {/* Card 5: İkna Edici Satış Asistanı - Full width mobile, 3 cols desktop */}
-            <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
-              <GlowingEffect spread={60} glow={true} proximity={80} />
+            <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-persona.webp"
                 alt="İkna Edici Satış Asistanı Personası"
@@ -1192,8 +1186,7 @@ export default function LandingPage() {
             </div>
 
             {/* RIGHT TOP: Bağlantı Card - Full width mobile, 5 cols desktop */}
-            <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
-              <GlowingEffect spread={70} glow={true} proximity={90} />
+            <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-baglantı.webp"
                 alt="Bağlantı"
@@ -1216,8 +1209,7 @@ export default function LandingPage() {
             </div>
 
             {/* LEFT BOTTOM: Veri İşleme Card - Full width mobile, 7 cols desktop */}
-            <div className="min-h-[400px] md:min-h-0 md:col-span-7 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
-              <GlowingEffect spread={80} glow={true} proximity={100} />
+            <div className="min-h-[400px] md:min-h-0 md:col-span-7 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-veri-isleme.webp"
                 alt="Veri İşleme"
@@ -1240,8 +1232,7 @@ export default function LandingPage() {
             </div>
 
             {/* RIGHT BOTTOM: Sonuç Card - Full width mobile, 5 cols desktop */}
-            <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
-              <GlowingEffect spread={70} glow={true} proximity={90} />
+            <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
               <Image
                 src="/images/2x/cliniolabs-sonuc.webp"
                 alt="Sonuç"
