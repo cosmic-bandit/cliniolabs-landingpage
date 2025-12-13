@@ -73,24 +73,37 @@
   --ring: oklch(0.708 0 0);
 
   /* Grafik/chart renkleri - farklı tonlarda 5 renk */
-  --chart-1: oklch(0.646 0.222 41.116); /* Turuncu ton */
-  --chart-2: oklch(0.6 0.118 184.704); /* Yeşilimsi mavi */
-  --chart-3: oklch(0.398 0.07 227.392); /* Koyu mavi */
-  --chart-4: oklch(0.828 0.189 84.429); /* Sarı */
-  --chart-5: oklch(0.769 0.188 70.08); /* Turuncu-sarı */
+  --chart-1: oklch(0.646 0.222 41.116);
+  /* Turuncu ton */
+  --chart-2: oklch(0.6 0.118 184.704);
+  /* Yeşilimsi mavi */
+  --chart-3: oklch(0.398 0.07 227.392);
+  /* Koyu mavi */
+  --chart-4: oklch(0.828 0.189 84.429);
+  /* Sarı */
+  --chart-5: oklch(0.769 0.188 70.08);
+  /* Turuncu-sarı */
 
   /* Genel köşe yuvarlaklık değeri */
   --radius: 0.625rem;
 
   /* Sidebar bileşeni renkleri */
-  --sidebar: oklch(0.985 0 0); /* Sidebar arka plan */
-  --sidebar-foreground: oklch(0.145 0 0); /* Sidebar metin */
-  --sidebar-primary: oklch(0.205 0 0); /* Sidebar ana vurgu */
-  --sidebar-primary-foreground: oklch(0.985 0 0); /* Sidebar vurgu metni */
-  --sidebar-accent: oklch(0.97 0 0); /* Sidebar hover arka plan */
-  --sidebar-accent-foreground: oklch(0.205 0 0); /* Sidebar hover metin */
-  --sidebar-border: oklch(0.922 0 0); /* Sidebar çerçeve */
-  --sidebar-ring: oklch(0.708 0 0); /* Sidebar focus ring */
+  --sidebar: oklch(0.985 0 0);
+  /* Sidebar arka plan */
+  --sidebar-foreground: oklch(0.145 0 0);
+  /* Sidebar metin */
+  --sidebar-primary: oklch(0.205 0 0);
+  /* Sidebar ana vurgu */
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  /* Sidebar vurgu metni */
+  --sidebar-accent: oklch(0.97 0 0);
+  /* Sidebar hover arka plan */
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  /* Sidebar hover metin */
+  --sidebar-border: oklch(0.922 0 0);
+  /* Sidebar çerçeve */
+  --sidebar-ring: oklch(0.708 0 0);
+  /* Sidebar focus ring */
 }
 
 /* ============================================
@@ -137,11 +150,16 @@
   --ring: oklch(0.439 0 0);
 
   /* Koyu tema grafik renkleri - daha canlı tonlar */
-  --chart-1: oklch(0.488 0.243 264.376); /* Mor */
-  --chart-2: oklch(0.696 0.17 162.48); /* Yeşil */
-  --chart-3: oklch(0.769 0.188 70.08); /* Turuncu */
-  --chart-4: oklch(0.627 0.265 303.9); /* Pembe-mor */
-  --chart-5: oklch(0.645 0.246 16.439); /* Kırmızı */
+  --chart-1: oklch(0.488 0.243 264.376);
+  /* Mor */
+  --chart-2: oklch(0.696 0.17 162.48);
+  /* Yeşil */
+  --chart-3: oklch(0.769 0.188 70.08);
+  /* Turuncu */
+  --chart-4: oklch(0.627 0.265 303.9);
+  /* Pembe-mor */
+  --chart-5: oklch(0.645 0.246 16.439);
+  /* Kırmızı */
 
   /* Koyu tema sidebar renkleri */
   --sidebar: oklch(0.205 0 0);
@@ -162,7 +180,8 @@
   /* Font ailesi tanımları */
   /* Font ailesi Funnel Display olarak güncellendi */
   --font-sans: "Funnel Display", "Funnel Display Fallback", sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback"; /* Kod fontı */
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  /* Kod fontı */
 
   /* CSS değişkenlerini Tailwind renk class'larına bağlar */
   /* Örn: bg-background, text-foreground şeklinde kullanılır */
@@ -192,10 +211,14 @@
   --color-chart-5: var(--chart-5);
 
   /* Farklı boyutlarda köşe yuvarlaklık değerleri */
-  --radius-sm: calc(var(--radius) - 4px); /* Küçük elemanlar için */
-  --radius-md: calc(var(--radius) - 2px); /* Orta elemanlar için */
-  --radius-lg: var(--radius); /* Büyük elemanlar için */
-  --radius-xl: calc(var(--radius) + 4px); /* Ekstra büyük elemanlar için */
+  --radius-sm: calc(var(--radius) - 4px);
+  /* Küçük elemanlar için */
+  --radius-md: calc(var(--radius) - 2px);
+  /* Orta elemanlar için */
+  --radius-lg: var(--radius);
+  /* Büyük elemanlar için */
+  --radius-xl: calc(var(--radius) + 4px);
+  /* Ekstra büyük elemanlar için */
 
   /* Sidebar renkleri Tailwind'e bağlanıyor */
   --color-sidebar: var(--sidebar);
@@ -213,6 +236,7 @@
    Tüm elementlere uygulanan global stiller
    ============================================ */
 @layer base {
+
   /* Tüm elementlere varsayılan border ve outline rengi atar */
   * {
     @apply border-border outline-ring/50;
@@ -234,9 +258,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -244,8 +270,10 @@
 
 /* Animasyonlu gradient border class'ı */
 .animate-gradient-border {
-  background-size: 200% 200%; /* Gradient'in hareket edebilmesi için büyük boyut */
-  animation: animate-gradient-border 3s ease infinite; /* Sürekli döngü */
+  background-size: 200% 200%;
+  /* Gradient'in hareket edebilmesi için büyük boyut */
+  animation: animate-gradient-border 3s ease infinite;
+  /* Sürekli döngü */
 }
 
 /* ============================================
@@ -257,9 +285,11 @@
     transform: translateY(0) translateX(0);
     opacity: 1;
   }
+
   70% {
     opacity: 1;
   }
+
   100% {
     transform: translateY(300px) translateX(300px);
     opacity: 0;
@@ -268,4 +298,25 @@
 
 .animate-meteor {
   animation: meteor linear infinite;
+}
+
+/* Aceternity UI Meteor Effect - Yukarıdan aşağıya diagonal */
+@keyframes meteor-effect {
+  0% {
+    transform: rotate(45deg) translateX(0);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(45deg) translateX(500px);
+    opacity: 0;
+  }
+}
+
+.animate-meteor-effect {
+  animation: meteor-effect linear infinite;
 }
