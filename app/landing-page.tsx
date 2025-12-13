@@ -1413,11 +1413,11 @@ export default function LandingPage() {
             Hemen demo talep edin, 15 dakikada sistemi kurulumunu tamamlayalım.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center justify-center gap-2 bg-white border-2 border-gray-900 text-gray-900 font-medium px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="inline-flex items-center justify-center gap-2 bg-white border border-gray-900 text-gray-900 font-medium px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors">
               <Phone className="w-5 h-5" />
               +90 552 539 3433
             </button>
-            <button className="inline-flex items-center justify-center gap-2 bg-gray-900 border-2 border-white hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+            <button className="inline-flex items-center justify-center gap-2 bg-gray-900 border border-white hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors">
               <Mail className="w-5 h-5" />
               Demo Talep Et
             </button>
