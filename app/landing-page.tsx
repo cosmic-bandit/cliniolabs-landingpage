@@ -634,12 +634,13 @@ const TestimonialCard = ({
 )
 
 export default function LandingPage() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [heroLine1Blur, setHeroLine1Blur] = useState(0)
-  const [heroLine2Blur, setHeroLine2Blur] = useState(0)
-  const [heroLine1Opacity, setHeroLine1Opacity] = useState(1)
-  const [heroLine2Opacity, setHeroLine2Opacity] = useState(1)
-  const [mockupOffset, setMockupOffset] = useState(100)
+  // Optimized: Combined scroll states for better performance
+  const [scrollState, setScrollState] = useState({
+    isScrolled: false,
+    heroLine1: { blur: 0, opacity: 1 },
+    heroLine2: { blur: 0, opacity: 1 },
+    mockupOffset: 100,
+  })
   const [visibleMessages, setVisibleMessages] = useState(0)
   const [activeContact, setActiveContact] = useState("Ahmet Y.")
   const [isTyping, setIsTyping] = useState(false)
@@ -690,46 +691,53 @@ export default function LandingPage() {
 
   useEffect(() => {
     let ticking = false
+    // Cache hero height and thresholds to avoid recalculation
+    let cachedHeroHeight = 0
+    let cachedThresholds = {
+      line1Start: 0,
+      line1End: 0,
+      line2Start: 0,
+      line2End: 0,
+    }
 
     const updateScroll = () => {
       const scrollY = window.scrollY
-      setIsScrolled(scrollY > 50)
+      const newState = { ...scrollState }
+
+      newState.isScrolled = scrollY > 50
 
       if (heroRef.current) {
         const heroHeight = heroRef.current.offsetHeight
 
-        // Line 1 starts blurring earlier
-        const line1Start = heroHeight * 0.15
-        const line1End = heroHeight * 0.45
-
-        // Line 2 starts blurring later
-        const line2Start = heroHeight * 0.25
-        const line2End = heroHeight * 0.55
-
-        // Line 1 blur
-        if (scrollY < line1Start) {
-          setHeroLine1Opacity(1)
-          setHeroLine1Blur(0)
-        } else if (scrollY < line1End) {
-          const progress = (scrollY - line1Start) / (line1End - line1Start)
-          setHeroLine1Opacity(1 - progress)
-          setHeroLine1Blur(progress * 8)
-        } else {
-          setHeroLine1Opacity(0)
-          setHeroLine1Blur(8)
+        // Only recalculate thresholds if hero height changed
+        if (heroHeight !== cachedHeroHeight) {
+          cachedHeroHeight = heroHeight
+          cachedThresholds = {
+            line1Start: heroHeight * 0.15,
+            line1End: heroHeight * 0.45,
+            line2Start: heroHeight * 0.25,
+            line2End: heroHeight * 0.55,
+          }
         }
 
-        // Line 2 blur
-        if (scrollY < line2Start) {
-          setHeroLine2Opacity(1)
-          setHeroLine2Blur(0)
-        } else if (scrollY < line2End) {
-          const progress = (scrollY - line2Start) / (line2End - line2Start)
-          setHeroLine2Opacity(1 - progress)
-          setHeroLine2Blur(progress * 8)
+        // Line 1 blur - using cached thresholds
+        if (scrollY < cachedThresholds.line1Start) {
+          newState.heroLine1 = { opacity: 1, blur: 0 }
+        } else if (scrollY < cachedThresholds.line1End) {
+          const progress = (scrollY - cachedThresholds.line1Start) / (cachedThresholds.line1End - cachedThresholds.line1Start)
+          newState.heroLine1 = { opacity: 1 - progress, blur: progress * 8 }
         } else {
-          setHeroLine2Opacity(0)
-          setHeroLine2Blur(8)
+          newState.heroLine1 = { opacity: 0, blur: 8 }
+        }
+
+        // Line 2 blur - using cached thresholds
+        if (scrollY < cachedThresholds.line2Start) {
+          newState.heroLine2 = { opacity: 1, blur: 0 }
+        } else if (scrollY < cachedThresholds.line2End) {
+          const progress = (scrollY - cachedThresholds.line2Start) / (cachedThresholds.line2End - cachedThresholds.line2Start)
+          newState.heroLine2 = { opacity: 1 - progress, blur: progress * 8 }
+        } else {
+          newState.heroLine2 = { opacity: 0, blur: 8 }
         }
       }
 
@@ -741,11 +749,11 @@ export default function LandingPage() {
         if (sectionTop < windowHeight && sectionTop > -rect.height) {
           const progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 0.7)))
           // Start at 100px apart, end at -70px (mobile overlaps desktop by 70px)
-          const newOffset = 100 - progress * 170
-          setMockupOffset(newOffset)
+          newState.mockupOffset = 100 - progress * 170
         }
       }
 
+      setScrollState(newState)
       ticking = false
     }
 
@@ -801,7 +809,7 @@ export default function LandingPage() {
 
       {/* Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 bg-white ${isScrolled ? "shadow-sm" : ""}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 bg-white ${scrollState.isScrolled ? "shadow-sm" : ""}`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -901,8 +909,8 @@ export default function LandingPage() {
                 <span
                   className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-[filter,opacity] duration-150 whitespace-nowrap will-change-[filter,opacity]"
                   style={{
-                    opacity: heroLine1Opacity,
-                    filter: `blur(${heroLine1Blur}px)`,
+                    opacity: scrollState.heroLine1.opacity,
+                    filter: `blur(${scrollState.heroLine1.blur}px)`,
                   }}
                 >
                   Kliniğiniz uyurken bile
@@ -910,8 +918,8 @@ export default function LandingPage() {
                 <span
                   className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] gradient-text-green-blue transition-[filter,opacity] duration-150 will-change-[filter,opacity]"
                   style={{
-                    opacity: heroLine2Opacity,
-                    filter: `blur(${heroLine2Blur}px)`,
+                    opacity: scrollState.heroLine2.opacity,
+                    filter: `blur(${scrollState.heroLine2.blur}px)`,
                   }}
                 >
                   çalışan akıllı asistan
@@ -919,8 +927,8 @@ export default function LandingPage() {
                 <span
                   className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-[filter,opacity] duration-150 will-change-[filter,opacity]"
                   style={{
-                    opacity: heroLine1Opacity,
-                    filter: `blur(${heroLine1Blur}px)`,
+                    opacity: scrollState.heroLine1.opacity,
+                    filter: `blur(${scrollState.heroLine1.blur}px)`,
                   }}
                 >
                   clinio.
@@ -980,7 +988,7 @@ export default function LandingPage() {
               style={{
                 left: "5%",
                 top: "50%",
-                transform: `translate3d(-${mockupOffset}px, -50%, 0)`,
+                transform: `translate3d(-${scrollState.mockupOffset}px, -50%, 0)`,
               }}
             >
               <WhatsAppMobileMockup activeContact={activeContact} />
@@ -992,7 +1000,7 @@ export default function LandingPage() {
               style={{
                 right: "0%",
                 top: "50%",
-                transform: `translate3d(${mockupOffset}px, -50%, 0)`,
+                transform: `translate3d(${scrollState.mockupOffset}px, -50%, 0)`,
               }}
             >
               <WhatsAppDesktopMockup activeContact={activeContact} onContactSelect={setActiveContact} />
