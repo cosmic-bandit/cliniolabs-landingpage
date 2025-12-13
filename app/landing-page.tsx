@@ -1024,16 +1024,16 @@ export default function LandingPage() {
 
           <IntegrationsBeam />
 
-          {/* Bento Grid - 12 Columns x 6 Rows with explicit heights */}
+          {/* Bento Grid - Responsive: flex mobile, grid desktop */}
           <div
-            className="grid grid-cols-12 gap-4 mt-16"
+            className="flex flex-col md:grid md:grid-cols-12 gap-4 mt-16"
             style={{
-              gridTemplateRows: 'repeat(6, 100px)'
+              gridTemplateRows: 'repeat(6, 100px)',
             }}
           >
 
-            {/* Title & Text Block - 4 Columns x 4 Rows (doubled height) */}
-            <div className="col-span-4 row-span-4 bg-white rounded-3xl p-8 flex flex-col justify-start">
+            {/* Title & Text Block - Full width mobile, 4 cols desktop */}
+            <div className="min-h-[400px] md:min-h-0 md:col-span-4 md:row-span-4 bg-white rounded-3xl p-8 flex flex-col justify-start">
               <h3 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
                 Kliniğinizin<br />Yeni Dijital Beyni
               </h3>
@@ -1042,8 +1042,8 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Card 1: Otopilot Hasta Yönetimi - 2 cols, 2 rows (doubled) */}
-            <div className="col-span-2 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+            {/* Card 1: Otopilot Hasta Yönetimi - Full width mobile, 2 cols desktop */}
+            <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
               <Image
                 src="/images/2x/cliniolabs-hasta-yonetim.webp"
                 alt="Otopilot Hasta Yönetimi"
@@ -1064,8 +1064,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Card 2: Tıbbi Düzeyde Fotoğraf Analizi - 3 cols, 4 rows (doubled) - BÜYÜK KART */}
-            <div className="col-span-3 row-span-4 relative rounded-3xl overflow-hidden group cursor-pointer">
+            {/* Card 2: Tıbbi Düzeyde Fotoğraf Analizi - Full width mobile, 3 cols desktop */}
+            <div className="min-h-[500px] md:min-h-0 md:col-span-3 md:row-span-4 relative rounded-3xl overflow-hidden group cursor-pointer">
               <Image
                 src="/images/2x/cliniolabs-foto-analiz.webp"
                 alt="Tıbbi Düzeyde Fotoğraf Analizi"
@@ -1088,8 +1088,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Card 3: Akıllı Triaj & Ön Eleme - 3 cols, 2 rows (doubled) */}
-            <div className="col-span-3 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+            {/* Card 3: Akıllı Triaj & Ön Eleme - Full width mobile, 3 cols desktop */}
+            <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
               <Image
                 src="/images/2x/cliniolabs-smart-filter.webp"
                 alt="Akıllı Triaj & Ön Eleme"
@@ -1112,8 +1112,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Card 4: Otomatik Arşivleme - 2 cols, 2 rows (doubled) */}
-            <div className="col-span-2 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+            {/* Card 4: Otomatik Arşivleme - Full width mobile, 2 cols desktop */}
+            <div className="min-h-[400px] md:min-h-0 md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
               <Image
                 src="/images/2x/cliniolabs-oto-arsiv.webp"
                 alt="Otomatik Arşivleme"
@@ -1134,8 +1134,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Card 5: İkna Edici Satış Asistanı - 3 cols, 2 rows (doubled) */}
-            <div className="col-span-3 row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
+            {/* Card 5: İkna Edici Satış Asistanı - Full width mobile, 3 cols desktop */}
+            <div className="min-h-[350px] md:min-h-0 md:col-span-3 md:row-span-2 relative rounded-3xl overflow-hidden group cursor-pointer">
               <Image
                 src="/images/2x/cliniolabs-persona.webp"
                 alt="İkna Edici Satış Asistanı Personası"
@@ -1167,16 +1167,16 @@ export default function LandingPage() {
         <DotPattern />
 
         <div className="max-w-7xl mx-auto px-6">
-          {/* 12 Column Grid: 7 (Left) + 5 (Right) */}
+          {/* 12 Column Grid: Responsive - flex mobile, grid desktop */}
           <div
-            className="grid grid-cols-12 gap-4"
+            className="flex flex-col md:grid md:grid-cols-12 gap-4"
             style={{
-              gridTemplateRows: 'repeat(6, 70px)'
+              gridTemplateRows: 'repeat(6, 70px)',
             }}
           >
 
-            {/* LEFT: Title & Text - 7 Columns, 3 Rows - Card Style */}
-            <div className="col-span-7 row-span-3 bg-white rounded-3xl p-8 flex flex-col justify-start">
+            {/* LEFT: Title & Text - Full width mobile, 7 cols desktop */}
+            <div className="min-h-[300px] md:min-h-0 md:col-span-7 md:row-span-3 bg-white rounded-3xl p-8 flex flex-col justify-start">
               <h2 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Dakikalar İçinde Kurulur,<br />Saniyeler İçinde Yanıtlar
               </h2>
@@ -1185,8 +1185,8 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* RIGHT TOP: Bağlantı Card - 5 Columns, 3 Rows */}
-            <div className="col-span-5 row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+            {/* RIGHT TOP: Bağlantı Card - Full width mobile, 5 cols desktop */}
+            <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
               <Image
                 src="/images/2x/cliniolabs-baglantı.webp"
                 alt="Bağlantı"
@@ -1208,8 +1208,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* LEFT BOTTOM: Veri İşleme Card - 7 Columns, 3 Rows (same as Sonuç) */}
-            <div className="col-span-7 row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+            {/* LEFT BOTTOM: Veri İşleme Card - Full width mobile, 7 cols desktop */}
+            <div className="min-h-[400px] md:min-h-0 md:col-span-7 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
               <Image
                 src="/images/2x/cliniolabs-veri-isleme.webp"
                 alt="Veri İşleme"
@@ -1231,8 +1231,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* RIGHT BOTTOM: Sonuç Card - 5 Columns, 3 Rows */}
-            <div className="col-span-5 row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
+            {/* RIGHT BOTTOM: Sonuç Card - Full width mobile, 5 cols desktop */}
+            <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100">
               <Image
                 src="/images/2x/cliniolabs-sonuc.webp"
                 alt="Sonuç"
