@@ -16,6 +16,7 @@ import { AnimatedList } from "@/components/ui/animated-list"
 import { Meteors } from "@/components/ui/meteors"
 import { Button } from "@/components/ui/button"
 import { AnimatedBeam, Circle } from "@/components/ui/animated-beam"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 // Dot Grid Pattern Background Component
 const DotPattern = () => (
@@ -633,6 +634,50 @@ const TestimonialCard = ({
   </div>
 )
 
+// Framer Motion Mockup Components for smooth scroll
+const MockupMobile = ({ activeContact }: { activeContact: string }) => {
+  const { scrollYProgress } = useScroll()
+  const x = useTransform(scrollYProgress, [0.1, 0.3], [100, -70])
+
+  return (
+    <motion.div
+      className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 z-20"
+      style={{
+        top: "50%",
+        y: "-50%",
+        x: x,
+      }}
+    >
+      <WhatsAppMobileMockup activeContact={activeContact} />
+    </motion.div>
+  )
+}
+
+const MockupDesktop = ({
+  activeContact,
+  onContactSelect
+}: {
+  activeContact: string
+  onContactSelect: (contact: string) => void
+}) => {
+  const { scrollYProgress } = useScroll()
+  const x = useTransform(scrollYProgress, [0.1, 0.3], [-100, 70])
+
+  return (
+    <motion.div
+      className="hidden md:block absolute z-10"
+      style={{
+        right: "0%",
+        top: "50%",
+        y: "-50%",
+        x: x,
+      }}
+    >
+      <WhatsAppDesktopMockup activeContact={activeContact} onContactSelect={onContactSelect} />
+    </motion.div>
+  )
+}
+
 export default function LandingPage() {
   // Optimized: Combined scroll states for better performance
   const [scrollState, setScrollState] = useState({
@@ -1004,28 +1049,11 @@ export default function LandingPage() {
 
         <div className="relative max-w-7xl mx-auto px-6 h-full">
           <div className="relative flex items-center justify-center h-[650px]">
-            {/* Mobile Mockup - Centered on mobile, animated on desktop */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 z-20 will-change-transform"
-              style={{
-                top: "50%",
-                transform: `translate3d(-${scrollState.mockupOffset}px, -50%, 0)`,
-              }}
-            >
-              <WhatsAppMobileMockup activeContact={activeContact} />
-            </div>
+            {/* Mobile Mockup - Smooth parallax with Framer Motion */}
+            <MockupMobile activeContact={activeContact} />
 
-            {/* Desktop Mockup - RIGHT side, moves LEFT on scroll */}
-            <div
-              className="hidden md:block absolute z-10 will-change-transform"
-              style={{
-                right: "0%",
-                top: "50%",
-                transform: `translate3d(${scrollState.mockupOffset}px, -50%, 0)`,
-              }}
-            >
-              <WhatsAppDesktopMockup activeContact={activeContact} onContactSelect={setActiveContact} />
-            </div>
+            {/* Desktop Mockup - Smooth parallax with Framer Motion */}
+            <MockupDesktop activeContact={activeContact} onContactSelect={setActiveContact} />
           </div>
         </div>
       </section>
