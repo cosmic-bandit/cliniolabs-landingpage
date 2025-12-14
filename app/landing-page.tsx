@@ -642,7 +642,9 @@ const MockupMobile = ({ activeContact }: { activeContact: string }) => {
     offset: ["start end", "center center"]
   })
   // Mobile: starts from left (-100), moves right (70)
-  const x = useTransform(scrollYProgress, [0, 1], [-100, 70])
+  const x = useTransform(scrollYProgress, [0, 1], [-100, 70], {
+    ease: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOutQuad
+  })
 
   return (
     <motion.div
@@ -672,7 +674,9 @@ const MockupDesktop = ({
     offset: ["start end", "center center"]
   })
   // Desktop: starts from right (100), moves left (-70)
-  const x = useTransform(scrollYProgress, [0, 1], [100, -70])
+  const x = useTransform(scrollYProgress, [0, 1], [100, -70], {
+    ease: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOutQuad
+  })
 
   return (
     <motion.div
@@ -973,6 +977,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen pt-32 pb-0 overflow-hidden">
         <DotPattern />
+
+        {/* Static blur background - no animation, no flickering */}
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-emerald-400/20 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
