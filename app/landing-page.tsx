@@ -131,7 +131,7 @@ const IntegrationsBeam = () => {
         containerRef={containerRef}
         fromRef={leftTopRef}
         toRef={centerRef}
-        curvature={-30}
+        curvature={0}
         gradientStartColor="#10b981"
         gradientStopColor="#34d399"
       />
@@ -139,7 +139,7 @@ const IntegrationsBeam = () => {
         containerRef={containerRef}
         fromRef={leftBottomRef}
         toRef={centerRef}
-        curvature={30}
+        curvature={0}
         gradientStartColor="#10b981"
         gradientStopColor="#34d399"
       />
@@ -149,7 +149,7 @@ const IntegrationsBeam = () => {
         containerRef={containerRef}
         fromRef={centerRef}
         toRef={rightTop1Ref}
-        curvature={-60}
+        curvature={0}
         reverse
         gradientStartColor="#10b981"
         gradientStopColor="#34d399"
@@ -158,7 +158,7 @@ const IntegrationsBeam = () => {
         containerRef={containerRef}
         fromRef={centerRef}
         toRef={rightTop2Ref}
-        curvature={-20}
+        curvature={0}
         reverse
         gradientStartColor="#10b981"
         gradientStopColor="#34d399"
@@ -167,7 +167,7 @@ const IntegrationsBeam = () => {
         containerRef={containerRef}
         fromRef={centerRef}
         toRef={rightBottom1Ref}
-        curvature={20}
+        curvature={0}
         reverse
         gradientStartColor="#10b981"
         gradientStopColor="#34d399"
@@ -176,7 +176,7 @@ const IntegrationsBeam = () => {
         containerRef={containerRef}
         fromRef={centerRef}
         toRef={rightBottom2Ref}
-        curvature={60}
+        curvature={0}
         reverse
         gradientStartColor="#10b981"
         gradientStopColor="#34d399"
@@ -184,35 +184,35 @@ const IntegrationsBeam = () => {
 
       {/* LEFT COLUMN (2 Inputs) */}
       <div className="flex flex-col justify-center gap-16 z-10">
-        <div ref={leftTopRef} className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
-          <Image src="/logos/camera.fill.svg" alt="Camera" width={40} height={40} />
+        <div ref={leftTopRef} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+          <Image src="/logos/camera.fill.svg" alt="Camera" width={32} height={32} />
         </div>
-        <div ref={leftBottomRef} className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
-          <Image src="/logos/whatsapp-8.svg" alt="WhatsApp" width={40} height={40} />
+        <div ref={leftBottomRef} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+          <Image src="/logos/whatsapp-8.svg" alt="WhatsApp" width={32} height={32} />
         </div>
       </div>
 
       {/* CENTER COLUMN (The Brain) */}
       <div className="flex flex-col justify-center z-20">
-        <div ref={centerRef} className="flex h-28 w-28 items-center justify-center rounded-full border-4 border-white bg-white shadow-2xl">
-          <Image src="/logos/cliniolabs-logo-vertical.svg" alt="ClinicLabs Logo" width={80} height={80} className="object-contain" />
+        <div ref={centerRef} className="flex h-24 w-24 items-center justify-center rounded-full border border-gray-200 bg-white shadow-2xl">
+          <Image src="/logos/cliniolabs-logo-vertical.svg" alt="ClinicLabs Logo" width={64} height={64} className="object-contain" />
         </div>
       </div>
 
       {/* RIGHT COLUMN (4 Outputs) */}
       <div className="flex flex-col justify-center gap-8 z-10">
-        <div ref={rightTop1Ref} className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
-          <Image src="/logos/chatgpt-6.svg" alt="Chat GPT" width={40} height={40} />
+        <div ref={rightTop1Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+          <Image src="/logos/chatgpt-6.svg" alt="Chat GPT" width={32} height={32} />
 
         </div>
-        <div ref={rightTop2Ref} className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
-          <Image src="/logos/new-logo-drive-google.svg" alt="Google Drive" width={40} height={40} />
+        <div ref={rightTop2Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+          <Image src="/logos/new-logo-drive-google.svg" alt="Google Drive" width={32} height={32} />
         </div>
-        <div ref={rightBottom1Ref} className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
-          <Image src="/logos/google-sheets-logo-icon.svg" alt="Google Sheets" width={32} height={32} />
+        <div ref={rightBottom1Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+          <Image src="/logos/google-sheets-logo-icon.svg" alt="Google Sheets" width={28} height={28} />
         </div>
-        <div ref={rightBottom2Ref} className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
-          <Image src="/logos/google-calendar-icon-2020-.svg" alt="Google Calendar" width={40} height={40} />
+        <div ref={rightBottom2Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+          <Image src="/logos/google-calendar-icon-2020-.svg" alt="Google Calendar" width={32} height={32} />
         </div>
       </div>
     </div>
