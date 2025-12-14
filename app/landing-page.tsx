@@ -636,22 +636,15 @@ const TestimonialCard = ({
 
 // Framer Motion Mockup Components for smooth scroll
 const MockupMobile = ({ activeContact }: { activeContact: string }) => {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"]
-  })
-  // Mobile: starts closer to center (-50), moves to final position (50)
-  // Merges when section is centered
-  const x = useTransform(scrollYProgress, [0, 1], [-50, 50], {
-    ease: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOutQuad
-  })
+  const { scrollY } = useScroll()
+  // Simple: scroll from 0 to 400px (same as desktop)
+  const x = useTransform(scrollY, [0, 400], [-50, 50])
 
   return (
     <motion.div
-      ref={ref}
-      className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 z-20"
+      className="absolute z-20"
       style={{
+        left: "5%",
         top: "50%",
         y: "-50%",
         x: x,
@@ -669,20 +662,12 @@ const MockupDesktop = ({
   activeContact: string
   onContactSelect: (contact: string) => void
 }) => {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"]
-  })
-  // Desktop: starts closer to center (50), moves to final position (-50)
-  // Merges when section is centered
-  const x = useTransform(scrollYProgress, [0, 1], [50, -50], {
-    ease: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOutQuad
-  })
+  const { scrollY } = useScroll()
+  // Simple: scroll from 0 to 400px (hero height)
+  const x = useTransform(scrollY, [0, 400], [50, -50])
 
   return (
     <motion.div
-      ref={ref}
       className="hidden md:block absolute z-10"
       style={{
         right: "0%",
@@ -1036,7 +1021,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="w-full md:max-w-md text-left md:text-right">
-                <p className="text-base text-gray-600 leading-relaxed mb-6">
+                <p className="text-base text-gray-600 font-medium leading-relaxed mb-6">
                   WhatsApp üzerinden 7/24 hasta danışmanlığı, AI fotoğraf analizi, otomatik fiyatlandırma ve randevu
                   yönetimi. Tek platformda.
                 </p>
@@ -1072,7 +1057,7 @@ export default function LandingPage() {
           <div className="text-center mb-2">
             <span className="text-sm font-semibold text-emerald-600 uppercase tracking-wider">Özellikler</span>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">Her Şey Tek Panelde</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
               Hasta iletişiminden randevu yönetimine, tüm süreçleriniz otomatik.
             </p>
           </div>
@@ -1092,7 +1077,7 @@ export default function LandingPage() {
               <h3 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
                 Kliniğinizin<br />Yeni Dijital Beyni
               </h3>
-              <p className="text-base text-gray-600 leading-relaxed">
+              <p className="text-base text-gray-600 font-medium leading-relaxed">
                 Manuel işleri bırakın, yapay zeka 7/24 sizin yerinize çalışsın, analiz etsin ve kaydetsin.
               </p>
             </div>
@@ -1235,7 +1220,7 @@ export default function LandingPage() {
               <h2 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Dakikalar İçinde Kurulur,<br />Saniyeler İçinde Yanıtlar
               </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg text-gray-600 font-medium leading-relaxed">
                 Karmaşık entegrasyonlar yok. WhatsApp ve Google hattınızı bağlayın, gerisini AI halletsin.
               </p>
             </div>
@@ -1354,7 +1339,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Fiyatlandırma</p>
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">Herkes için basit fiyatlandırma.</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-lg text-gray-600 font-medium max-w-3xl mx-auto mb-8">
               Kitlenizle etkileşim kurmak, müşteri sadakati oluşturmak ve satışları artırmak için{" "}
               <span className="font-semibold text-gray-900">size uygun bir plan</span> seçin.
             </p>
@@ -1464,7 +1449,7 @@ export default function LandingPage() {
         <Meteors number={30} />
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Kliniğinizi Dönüştürmeye Hazır mısınız?</h2>
-          <p className="text-xl text-gray-400 mb-8">
+          <p className="text-xl text-gray-400 font-medium mb-8">
             Hemen demo talep edin, 15 dakikada sistemi kurulumunu tamamlayalım.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1491,7 +1476,7 @@ export default function LandingPage() {
                 <img src="/logos/cliniolabs-logo-horizontal.svg" alt="ClinicLabs" className="h-10 w-auto" />
               </a>
               <h3 className="text-3xl font-bold text-gray-900 mb-2">Hemen başlayın.</h3>
-              <p className="text-gray-500 mb-6">7 günlük ücretsiz denemeyi başlatın. Kredi kartı gerekmez.</p>
+              <p className="text-gray-500 font-medium mb-6">7 günlük ücretsiz denemeyi başlatın. Kredi kartı gerekmez.</p>
               <button className="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
                 Ücretsiz deneyin
                 <ChevronRight className="w-4 h-4" />
