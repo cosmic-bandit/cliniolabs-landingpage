@@ -641,8 +641,9 @@ const MockupMobile = ({ activeContact }: { activeContact: string }) => {
     target: ref,
     offset: ["start end", "center center"]
   })
-  // Mobile: starts from left (-100), moves right (70)
-  const x = useTransform(scrollYProgress, [0, 1], [-100, 70], {
+  // Mobile: starts closer to center (-50), moves to final position (50)
+  // Merges when section is centered
+  const x = useTransform(scrollYProgress, [0, 1], [-50, 50], {
     ease: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOutQuad
   })
 
@@ -673,8 +674,9 @@ const MockupDesktop = ({
     target: ref,
     offset: ["start end", "center center"]
   })
-  // Desktop: starts from right (100), moves left (-70)
-  const x = useTransform(scrollYProgress, [0, 1], [100, -70], {
+  // Desktop: starts closer to center (50), moves to final position (-50)
+  // Merges when section is centered
+  const x = useTransform(scrollYProgress, [0, 1], [50, -50], {
     ease: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOutQuad
   })
 
