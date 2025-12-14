@@ -814,7 +814,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <a href="#" className="flex items-center">
-              <img src="/logos/cliniolabs-logo-horizontal.svg" alt="ClinicLabs" className="h-[44px] w-auto" />
+              <img src="/logos/cliniolabs-logo-horizontal.svg" alt="ClinicLabs" className="h-[36px] w-auto" />
             </a>
           </div>
           <div className="hidden md:flex items-center gap-8">
@@ -983,7 +983,7 @@ export default function LandingPage() {
           <div className="relative flex items-center justify-center h-[650px]">
             {/* Mobile Mockup - Centered on mobile, animated on desktop */}
             <div
-              className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 transition-transform duration-300 ease-out z-20 will-change-transform"
+              className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 z-20 will-change-transform"
               style={{
                 top: "50%",
                 transform: `translate3d(-${scrollState.mockupOffset}px, -50%, 0)`,
@@ -994,7 +994,7 @@ export default function LandingPage() {
 
             {/* Desktop Mockup - RIGHT side, moves LEFT on scroll */}
             <div
-              className="hidden md:block absolute transition-transform duration-300 ease-out z-10 will-change-transform"
+              className="hidden md:block absolute z-10 will-change-transform"
               style={{
                 right: "0%",
                 top: "50%",
