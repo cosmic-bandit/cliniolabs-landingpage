@@ -636,11 +636,17 @@ const TestimonialCard = ({
 
 // Framer Motion Mockup Components for smooth scroll
 const MockupMobile = ({ activeContact }: { activeContact: string }) => {
-  const { scrollYProgress } = useScroll()
-  const x = useTransform(scrollYProgress, [0.1, 0.3], [100, -70])
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center center"]
+  })
+  // Mobile: starts from left (-100), moves right (70)
+  const x = useTransform(scrollYProgress, [0, 1], [-100, 70])
 
   return (
     <motion.div
+      ref={ref}
       className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0 z-20"
       style={{
         top: "50%",
@@ -660,11 +666,17 @@ const MockupDesktop = ({
   activeContact: string
   onContactSelect: (contact: string) => void
 }) => {
-  const { scrollYProgress } = useScroll()
-  const x = useTransform(scrollYProgress, [0.1, 0.3], [-100, 70])
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center center"]
+  })
+  // Desktop: starts from right (100), moves left (-70)
+  const x = useTransform(scrollYProgress, [0, 1], [100, -70])
 
   return (
     <motion.div
+      ref={ref}
       className="hidden md:block absolute z-10"
       style={{
         right: "0%",
@@ -962,9 +974,6 @@ export default function LandingPage() {
       <section ref={heroRef} className="relative min-h-screen pt-32 pb-0 overflow-hidden">
         <DotPattern />
 
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-emerald-400/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute top-1/2 right-1/4 w-[400px] h-[250px] bg-teal-400/15 rounded-full blur-[80px] pointer-events-none" />
-
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             {/* Left side - existing hero content */}
@@ -977,29 +986,17 @@ export default function LandingPage() {
 
               <h1 className="flex flex-col mb-8 text-left">
                 <span
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-[filter,opacity] duration-150 whitespace-nowrap will-change-[filter,opacity]"
-                  style={{
-                    opacity: scrollState.heroLine1.opacity,
-                    filter: `blur(${scrollState.heroLine1.blur}px)`,
-                  }}
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] whitespace-nowrap"
                 >
                   Kliniğiniz uyurken bile
                 </span>
                 <span
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] gradient-text-green-blue transition-[filter,opacity] duration-150 will-change-[filter,opacity]"
-                  style={{
-                    opacity: scrollState.heroLine2.opacity,
-                    filter: `blur(${scrollState.heroLine2.blur}px)`,
-                  }}
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] gradient-text-green-blue"
                 >
                   çalışan akıllı asistan
                 </span>
                 <span
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] transition-[filter,opacity] duration-150 will-change-[filter,opacity]"
-                  style={{
-                    opacity: scrollState.heroLine1.opacity,
-                    filter: `blur(${scrollState.heroLine1.blur}px)`,
-                  }}
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1]"
                 >
                   clinio.
                 </span>
