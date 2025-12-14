@@ -703,8 +703,13 @@ export default function LandingPage() {
     const updateScroll = () => {
       const scrollY = window.scrollY
       const newState = { ...scrollState }
+      let hasChanges = false
 
-      newState.isScrolled = scrollY > 50
+      const newIsScrolled = scrollY > 50
+      if (newState.isScrolled !== newIsScrolled) {
+        newState.isScrolled = newIsScrolled
+        hasChanges = true
+      }
 
       if (heroRef.current) {
         const heroHeight = heroRef.current.offsetHeight
@@ -721,23 +726,35 @@ export default function LandingPage() {
         }
 
         // Line 1 blur - using cached thresholds
+        let newLine1
         if (scrollY < cachedThresholds.line1Start) {
-          newState.heroLine1 = { opacity: 1, blur: 0 }
+          newLine1 = { opacity: 1, blur: 0 }
         } else if (scrollY < cachedThresholds.line1End) {
           const progress = (scrollY - cachedThresholds.line1Start) / (cachedThresholds.line1End - cachedThresholds.line1Start)
-          newState.heroLine1 = { opacity: 1 - progress, blur: progress * 8 }
+          newLine1 = { opacity: 1 - progress, blur: progress * 8 }
         } else {
-          newState.heroLine1 = { opacity: 0, blur: 8 }
+          newLine1 = { opacity: 0, blur: 8 }
+        }
+
+        if (newState.heroLine1.opacity !== newLine1.opacity || newState.heroLine1.blur !== newLine1.blur) {
+          newState.heroLine1 = newLine1
+          hasChanges = true
         }
 
         // Line 2 blur - using cached thresholds
+        let newLine2
         if (scrollY < cachedThresholds.line2Start) {
-          newState.heroLine2 = { opacity: 1, blur: 0 }
+          newLine2 = { opacity: 1, blur: 0 }
         } else if (scrollY < cachedThresholds.line2End) {
           const progress = (scrollY - cachedThresholds.line2Start) / (cachedThresholds.line2End - cachedThresholds.line2Start)
-          newState.heroLine2 = { opacity: 1 - progress, blur: progress * 8 }
+          newLine2 = { opacity: 1 - progress, blur: progress * 8 }
         } else {
-          newState.heroLine2 = { opacity: 0, blur: 8 }
+          newLine2 = { opacity: 0, blur: 8 }
+        }
+
+        if (newState.heroLine2.opacity !== newLine2.opacity || newState.heroLine2.blur !== newLine2.blur) {
+          newState.heroLine2 = newLine2
+          hasChanges = true
         }
       }
 
@@ -749,11 +766,17 @@ export default function LandingPage() {
         if (sectionTop < windowHeight && sectionTop > -rect.height) {
           const progress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight * 0.7)))
           // Start at 100px apart, end at -70px (mobile overlaps desktop by 70px)
-          newState.mockupOffset = 100 - progress * 170
+          const newOffset = 100 - progress * 170
+          if (Math.abs(newState.mockupOffset - newOffset) > 0.5) {
+            newState.mockupOffset = newOffset
+            hasChanges = true
+          }
         }
       }
 
-      setScrollState(newState)
+      if (hasChanges) {
+        setScrollState(newState)
+      }
       ticking = false
     }
 
