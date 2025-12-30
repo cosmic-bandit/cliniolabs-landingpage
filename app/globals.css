@@ -178,10 +178,40 @@
    ============================================ */
 @theme inline {
   /* Font ailesi tanımları */
-  /* Font ailesi Funnel Display olarak güncellendi */
-  --font-sans: "Funnel Display", "Funnel Display Fallback", sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
-  /* Kod fontı */
+  /* SF Pro - Apple'ın sistem fontu, macOS/iOS'ta native görünür */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Geist Mono", "Fira Code", Consolas, monospace;
+
+  /* ===========================================
+     FONT SIZE / YAZI BÜYÜKLÜĞÜ (8px tabanlı)
+     Mevcut class isimleri korundu, değerler güncellendi
+     =========================================== */
+  --text-xs: 8px;
+  /* Eskisi: 12px */
+  --text-sm: 12px;
+  /* Eskisi: 14px, en yakın: 8 veya 16 → 12 orta yol */
+  --text-base: 16px;
+  /* Eskisi: 16px ✓ aynı kaldı */
+  --text-lg: 20px;
+  /* Eskisi: 18px, en yakın: 16 veya 24 → 20 orta yol */
+  --text-xl: 24px;
+  /* Eskisi: 20px */
+  --text-2xl: 28px;
+  /* Eskisi: 24px */
+  --text-3xl: 32px;
+  /* Eskisi: 30px */
+  --text-4xl: 40px;
+  /* Eskisi: 36px */
+  --text-5xl: 48px;
+  /* Eskisi: 48px ✓ aynı kaldı */
+  --text-6xl: 56px;
+  /* Eskisi: 60px */
+  --text-7xl: 64px;
+  /* Eskisi: 72px */
+  --text-8xl: 72px;
+  /* Eskisi: 96px */
+  --text-9xl: 80px;
+  /* Eskisi: 128px */
 
   /* CSS değişkenlerini Tailwind renk class'larına bağlar */
   /* Örn: bg-background, text-foreground şeklinde kullanılır */
@@ -319,4 +349,146 @@
 
 .animate-meteor-effect {
   animation: meteor-effect linear infinite;
+}
+
+/* ============================================
+   COMPONENT CLASSES
+   Tekrar eden stiller için merkezi sınıflar
+   ============================================ */
+@layer components {
+
+  /* ========== TYPOGRAPHY / TİPOGRAFİ ========== */
+  /* 
+   * Ana Font: SF Pro (Apple sistem fontu)
+   * Fallback: Segoe UI (Windows), Roboto (Android)
+   * Mono Font: SF Mono, Fira Code
+   * 
+   * YAZI BÜYÜKLÜĞÜ CETVELİ (8px tabanlı):
+   * text-xs     = 8px   (0.5rem)
+   * text-sm     = 12px  (0.75rem)
+   * text-base   = 16px  (1rem)
+   * text-lg     = 20px  (1.25rem)
+   * text-xl     = 24px  (1.5rem)
+   * text-2xl    = 28px  (1.75rem)
+   * text-3xl    = 32px  (2rem)
+   * text-4xl    = 40px  (2.5rem)
+   * text-5xl    = 48px  (3rem)
+   * text-6xl    = 56px  (3.5rem)
+   * text-7xl    = 64px  (4rem)
+   * text-8xl    = 72px  (4.5rem)
+   * text-9xl    = 80px  (5rem)
+   * 
+   * FONT WEIGHT:
+   * font-light    = 300
+   * font-normal   = 400
+   * font-medium   = 500
+   * font-semibold = 600
+   * font-bold     = 700
+   */
+
+  /* Section Badge - "Özellikler", "Referanslar" gibi etiketler */
+  /* Apple Intelligence gradient kullanılıyor */
+  .section-badge {
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.05em;
+    background: linear-gradient(90deg, #2997FF 0%, #A855F7 35%, #EC4899 65%, #f59023 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Section Title - Ana başlıklar */
+  .section-title {
+    @apply text-4xl md:text-5xl font-semibold text-black;
+  }
+
+  /* Section Title (koyu arkaplan için) */
+  .section-title-light {
+    @apply text-4xl md:text-5xl font-semibold text-white;
+  }
+
+  /* Section Subtitle - Açıklama metinleri */
+  .section-subtitle {
+    @apply text-base text-black font-medium;
+  }
+
+  /* Navigation Link */
+  .nav-link {
+    @apply relative px-4 py-2 text-xs font-light text-black hover:text-black transition-colors;
+  }
+
+  /* Primary Button */
+  .btn-primary {
+    @apply bg-gray-900 hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors;
+  }
+
+  /* ========== PRICING CARDS ========== */
+  .pricing-card {
+    @apply relative z-10 bg-white border border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-shadow;
+  }
+
+  .pricing-card-featured {
+    @apply relative z-10 bg-white border-2 border-gray-900 rounded-3xl p-8 hover:shadow-xl transition-shadow;
+  }
+
+  .pricing-title {
+    @apply text-2xl font-bold text-gray-900 mb-2;
+  }
+
+  .pricing-description {
+    @apply text-sm text-gray-500 mb-6;
+  }
+
+  .pricing-price {
+    @apply text-4xl font-bold text-gray-900;
+  }
+
+  .pricing-button {
+    @apply w-full py-3 bg-[#333333] text-white rounded-lg font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8;
+  }
+
+  .pricing-feature {
+    @apply flex items-start gap-3 text-sm text-gray-700;
+  }
+
+  /* ========== TESTIMONIAL CARDS ========== */
+  .testimonial-card {
+    @apply bg-white border border-gray-200 rounded-2xl p-8;
+  }
+
+  .testimonial-quote {
+    @apply text-gray-700 mb-6 leading-relaxed;
+  }
+
+  .testimonial-author {
+    @apply font-semibold text-gray-800;
+  }
+
+  .testimonial-role {
+    @apply text-sm text-gray-500;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer-title {
+    @apply text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4;
+  }
+
+  .footer-link {
+    @apply text-sm text-gray-500 hover:text-gray-900 transition-colors;
+  }
+
+  /* ========== BENTO GRID CARDS ========== */
+  .bento-card {
+    @apply relative bg-[#F8F7F4] border border-gray-200/40 rounded-[32px] p-10 hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+  }
+
+  .bento-title {
+    @apply text-[22px] font-bold text-black mb-3 leading-tight pr-10;
+  }
+
+  .bento-description {
+    @apply text-[14px] text-black leading-relaxed opacity-80;
+  }
 }

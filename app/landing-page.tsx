@@ -12,6 +12,7 @@ import {
 import { ChevronRight, Star, ArrowRight, Phone, Mail, Check, Menu } from "lucide-react"
 import { Linkedin, Twitter } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { PillTabs } from "@/components/ui/animated-tabs"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { Meteors } from "@/components/ui/meteors"
 import { Button } from "@/components/ui/button"
@@ -576,7 +577,7 @@ const FeatureCard = ({
   description: string
 }) => {
   return (
-    <div className="group relative bg-[#F8F7F4] border border-gray-200/40 rounded-[32px] p-10 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+    <div className="group bento-card">
       {/* Expand Icon - Top Right - Very Subtle */}
       <div className="absolute top-8 right-8 w-5 h-5 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
@@ -598,10 +599,10 @@ const FeatureCard = ({
       </div>
 
       {/* Title - Larger and Bolder */}
-      <h3 className="text-[22px] font-bold text-gray-900 mb-3 leading-tight pr-10">{title}</h3>
+      <h3 className="bento-title">{title}</h3>
 
       {/* Description - Smaller and More Subtle */}
-      <p className="text-[14px] text-gray-600 leading-relaxed opacity-80">{description}</p>
+      <p className="bento-description">{description}</p>
     </div>
   )
 }
@@ -613,20 +614,20 @@ const TestimonialCard = ({
   role,
   clinic,
 }: { quote: string; name: string; role: string; clinic: string }) => (
-  <div className="bg-white border border-gray-200 rounded-2xl p-8">
+  <div className="testimonial-card">
     <div className="flex gap-1 mb-4">
       {[...Array(5)].map((_, i) => (
         <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
       ))}
     </div>
-    <p className="text-gray-700 mb-6 leading-relaxed">{quote}</p>
+    <p className="testimonial-quote">{quote}</p>
     <div className="flex items-center gap-3">
       <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center text-white font-bold">
         {name.charAt(0)}
       </div>
       <div>
-        <p className="font-semibold text-gray-800">{name}</p>
-        <p className="text-sm text-gray-500">
+        <p className="testimonial-author">{name}</p>
+        <p className="testimonial-role">
           {role} • {clinic}
         </p>
       </div>
@@ -680,6 +681,48 @@ const MockupDesktop = ({
     </motion.div>
   )
 }
+
+// Sliding Navigation with Framer Motion
+const SlidingNav = () => {
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null)
+  const navItems = [
+    { label: "Özellikler", href: "#features" },
+    { label: "Nasıl Çalışır", href: "#how-it-works" },
+    { label: "Referanslar", href: "#testimonials" },
+    { label: "Fiyatlandırma", href: "#pricing" },
+  ]
+
+  return (
+    <div
+      className="hidden md:flex items-center gap-1 relative"
+      onMouseLeave={() => setHoveredNav(null)}
+    >
+      {navItems.map((item) => (
+        <a
+          key={item.href}
+          href={item.href}
+          className="nav-link"
+          onMouseEnter={() => setHoveredNav(item.href)}
+        >
+          {item.label}
+          {hoveredNav === item.href && (
+            <motion.span
+              layoutId="navHoverSlide"
+              className="absolute inset-0 bg-gray-100 rounded-lg"
+              style={{ zIndex: -1 }}
+              transition={{
+                type: "spring",
+                bounce: 0.2,
+                duration: 0.6,
+              }}
+            />
+          )}
+        </a>
+      ))}
+    </div>
+  )
+}
+
 
 export default function LandingPage() {
   // Optimized: Combined scroll states for better performance
@@ -851,8 +894,8 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
       <style jsx global>{`
-        .gradient-text-green-blue {
-          background: linear-gradient(135deg, #059669 0%, #10b981 40%, #0ea5e9 100%);
+        .gradient-text-apple {
+          background: linear-gradient(90deg, #2997FF 0%, #A855F7 35%, #EC4899 65%, #f59023ff 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -888,21 +931,8 @@ export default function LandingPage() {
               <img src="/logos/cliniolabs-logo-horizontal.svg" alt="ClinicLabs" className="h-[36px] w-auto" />
             </a>
           </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              Özellikler
-            </a>
-            <a href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              Nasıl Çalışır
-            </a>
-            <a href="#testimonials" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              Referanslar
-            </a>
-            <a href="#pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              Fiyatlandırma
-            </a>
-          </div>
-          <Button className="hidden md:flex bg-gray-900 hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors items-center gap-2">
+          <SlidingNav />
+          <Button className="btn-primary hidden md:flex items-center gap-2">
             Ücretsiz deneyin
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -980,17 +1010,17 @@ export default function LandingPage() {
 
               <h1 className="flex flex-col mb-8 text-left">
                 <span
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1] whitespace-nowrap"
+                  className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-gray-900 mb-2 tracking-tight leading-[1.1] whitespace-nowrap"
                 >
                   Kliniğiniz uyurken bile
                 </span>
                 <span
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] gradient-text-green-blue"
+                  className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold tracking-tight leading-[1.1] gradient-text-apple"
                 >
                   çalışan akıllı asistan
                 </span>
                 <span
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 tracking-tight leading-[1.1]"
+                  className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-gray-900 mb-2 tracking-tight leading-[1.1]"
                 >
                   clinio.
                 </span>
@@ -1025,7 +1055,7 @@ export default function LandingPage() {
                   WhatsApp üzerinden 7/24 hasta danışmanlığı, AI fotoğraf analizi, otomatik fiyatlandırma ve randevu
                   yönetimi. Tek platformda.
                 </p>
-                <button className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+                <button className="btn-primary inline-flex items-center gap-2">
                   Ücretsiz deneyin
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -1055,9 +1085,9 @@ export default function LandingPage() {
 
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="text-center mb-2">
-            <span className="text-sm font-semibold text-emerald-600 uppercase tracking-wider">Özellikler</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">Her Şey Tek Panelde</h2>
-            <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
+            <span className="section-badge">Özellikler</span>
+            <h2 className="section-title mt-4 mb-6">Her şey tek panelde</h2>
+            <p className="section-subtitle mx-auto">
               Hasta iletişiminden randevu yönetimine, tüm süreçleriniz otomatik.
             </p>
           </div>
@@ -1304,8 +1334,8 @@ export default function LandingPage() {
 
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="text-sm font-semibold text-emerald-600 uppercase tracking-wider">Referanslar</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">Klinikler Ne Diyor?</h2>
+            <span className="section-badge">Referanslar</span>
+            <h2 className="section-title mt-4 mb-6">Klinikler Ne Diyor?</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -1366,19 +1396,19 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Basic Plan */}
-            <div className="relative z-10 bg-white border border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-shadow">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Başlangıç</h3>
-              <p className="text-sm text-gray-500 mb-6">Küçük klinikler ve bireysel kullanıcılar için</p>
+            <div className="pricing-card">
+              <h3 className="pricing-title">Başlangıç</h3>
+              <p className="pricing-description">Küçük klinikler ve bireysel kullanıcılar için</p>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-gray-900">{prices.starter.toLocaleString("tr-TR")}₺</span>
+                <span className="pricing-price">{prices.starter.toLocaleString("tr-TR")}₺</span>
                 <span className="text-gray-500 text-lg"> / ay</span>
               </div>
-              <button className="w-full py-3 bg-[#333333] text-white rounded-lg font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
+              <button className="pricing-button">
                 Abone Ol
               </button>
               <ul className="space-y-4">
                 {["AI destekli analiz", "Temel destek", "5 proje limiti", "Temel AI araçlarına erişim"].map((f, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                  <li key={i} className="pricing-feature">
                     <Check className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
                     <span>{f}</span>
                   </li>
@@ -1387,14 +1417,14 @@ export default function LandingPage() {
             </div>
 
             {/* Premium Plan - Featured */}
-            <div className="relative z-10 bg-white border-2 border-gray-900 rounded-3xl p-8 hover:shadow-xl transition-shadow">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Profesyonel</h3>
-              <p className="text-sm text-gray-500 mb-6">Büyüyen işletmeler için premium plan</p>
+            <div className="pricing-card-featured">
+              <h3 className="pricing-title">Profesyonel</h3>
+              <p className="pricing-description">Büyüyen işletmeler için premium plan</p>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-gray-900">{prices.pro.toLocaleString("tr-TR")}₺</span>
+                <span className="pricing-price">{prices.pro.toLocaleString("tr-TR")}₺</span>
                 <span className="text-gray-500 text-lg"> / ay</span>
               </div>
-              <button className="w-full py-3 bg-[#333333] text-white rounded-lg font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
+              <button className="pricing-button">
                 Abone Ol
               </button>
               <ul className="space-y-4">
@@ -1405,7 +1435,7 @@ export default function LandingPage() {
                   "Tüm AI araçlarına erişim",
                   "Özel entegrasyonlar",
                 ].map((f, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                  <li key={i} className="pricing-feature">
                     <Check className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
                     <span>{f}</span>
                   </li>
@@ -1414,14 +1444,14 @@ export default function LandingPage() {
             </div>
 
             {/* Enterprise Plan */}
-            <div className="relative z-10 bg-white border border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-shadow">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Kurumsal</h3>
-              <p className="text-sm text-gray-500 mb-6">Büyük organizasyonlar için gelişmiş özelliklerle</p>
+            <div className="pricing-card">
+              <h3 className="pricing-title">Kurumsal</h3>
+              <p className="pricing-description">Büyük organizasyonlar için gelişmiş özelliklerle</p>
               <div className="mb-6">
-                <span className="text-4xl font-bold text-gray-900">{prices.enterprise.toLocaleString("tr-TR")}₺</span>
+                <span className="pricing-price">{prices.enterprise.toLocaleString("tr-TR")}₺</span>
                 <span className="text-gray-500 text-lg"> / ay</span>
               </div>
-              <button className="w-full py-3 bg-[#333333] text-white rounded-lg font-semibold transition-[box-shadow] duration-200 hover:ring-[2px] hover:ring-[#333333] hover:ring-offset-[3px] hover:ring-offset-white mb-8">
+              <button className="pricing-button">
                 Abone Ol
               </button>
               <ul className="space-y-4">
@@ -1433,7 +1463,7 @@ export default function LandingPage() {
                   "Özel entegrasyonlar",
                   "Veri güvenliği ve uyumluluk",
                 ].map((f, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                  <li key={i} className="pricing-feature">
                     <Check className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
                     <span>{f}</span>
                   </li>
@@ -1448,7 +1478,7 @@ export default function LandingPage() {
       <section className="relative py-32 bg-gray-900 overflow-hidden">
         <Meteors number={30} />
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Kliniğinizi Dönüştürmeye Hazır mısınız?</h2>
+          <h2 className="section-title-light mb-6">Kliniğinizi Dönüştürmeye Hazır mısınız?</h2>
           <p className="text-xl text-gray-400 font-medium mb-8">
             Hemen demo talep edin, 15 dakikada sistemi kurulumunu tamamlayalım.
           </p>
@@ -1487,7 +1517,7 @@ export default function LandingPage() {
             <div className="lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-8">
               {/* Product Column */}
               <div>
-                <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">ÜRÜN</h4>
+                <h4 className="footer-title">ÜRÜN</h4>
                 <ul className="space-y-3">
                   <li>
                     <a href="#features" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
@@ -1514,7 +1544,7 @@ export default function LandingPage() {
 
               {/* Company Column */}
               <div>
-                <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">ŞİRKET</h4>
+                <h4 className="footer-title">ŞİRKET</h4>
                 <ul className="space-y-3">
                   <li>
                     <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
@@ -1541,7 +1571,7 @@ export default function LandingPage() {
 
               {/* Resources Column */}
               <div>
-                <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">KAYNAKLAR</h4>
+                <h4 className="footer-title">KAYNAKLAR</h4>
                 <ul className="space-y-3">
                   <li>
                     <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">

@@ -1,13 +1,7 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-})
 
 export const metadata: Metadata = {
   title: "ClinicAI - Klinikler için AI Destekli Hasta Yönetim Platformu",
@@ -35,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <body className={`${inter.className} antialiased`}>
+      <body className="font-sans antialiased">
         {children}
         <Analytics />
       </body>

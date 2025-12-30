@@ -1,0 +1,98 @@
+# Satış Akışı ve Fotoğraf Doğrulama Düzeltme Planı
+
+## 🔴 Tespit Edilen Problemler
+
+### Problem 1: Agresif Satış (Merhaba der demez foto istiyor)
+
+**Mevcut Durum:** AI GREETING aşamasında bile yeterlilik sorularını atlayıp foto istiyor.
+
+**Nedeni:** Build Chat Prompt'taki satış hunisi çok agresif yazılmış. AI "her cevapta bir eylem iste" kuralıyla en hızlı ilerlemeye çalışıyor.
+
+---
+
+### Problem 2: Vision Prompt Çok Katı (Geçerli Fotoğrafları Reddediyor)
+
+**Mevcut Prompt:**
+```
+1. Bu saç fotoğrafı mı?
+2. Hangi açılar var? (ÖN, TEPE, DONÖR/ENSE)
+
+Eğer saç değilse: "Lütfen saç bölgenizin fotoğrafını gönderin" de ve dur.
+```
+
+**Problem:** Qwen modeli bu kuralla çok katı davranıyor - ön ve tepe fotoğraflarını "donör yok" diye reddediyor.
+
+> [!CAUTION]
+> Ekran görüntüsünde hasta **mükemmel 3 açılı saç fotoğrafları** göndermiş ama AI hepsini reddetti. Bu güven kırıcı!
+
+---
+
+### Problem 3: Yeterlilik Soruları Tek Seferde (2'şer olmalı)
+
+**Mevcut:** 4 soru tek listede veriliyor  
+**İstenen:** 2'şer soru şeklinde sorulsun
+
+---
+
+## ✅ Çözüm Planı
+
+### Düzeltme 1: Build Chat Prompt - Daha Nazik Satış Hunisi
+
+```javascript
+// YENİ AŞAMA YAPISI
+// AŞAMA 1: KARŞILAMA - Sadece isim sor
+// AŞAMA 2: SOHBET - Derdini dinle, empati kur
+// AŞAMA 3: YETERLİLİK (1/2) - İlk 2 soru
+// AŞAMA 4: YETERLİLİK (2/2) - Son 2 soru  
+// AŞAMA 5: FOTOĞRAF İSTE - Artık hazır
+// AŞAMA 6: ANALİZ + CTA
+```
+
+**Değişiklikler:**
+- "Merhaba" yanıtı sadece isim sorsun, foto istemesin
+- Hasta derdini anlattığında empati kursun, hemen soru bombalamasın
+- Yeterlilik soruları 2 mesaja bölünsün
+
+---
+
+### Düzeltme 2: Multi-Image Vision - Daha Toleranslı Prompt
+
+**YENİ:**
+```
+## FOTOĞRAF DEĞERLENDİRME
+
+✅ KABUL ET:
+- Saç/kafa görünen herhangi bir fotoğraf
+- Ön, tepe, yan, ense herhangi bir açı
+- Bulanık veya uzaktan bile olsa saç görünüyorsa KABUL
+
+❌ REDDET (sadece bunları):
+- Saç görünmeyen fotoğraflar (kol, bacak, manzara, vb.)
+- Yüz olmadan sadece ense DE kabul edilebilir (donör için)
+
+⚠️ ÖNEMLİ: 
+- Hasta 3 açı gönderdiyse HEPSİNİ analiz et, "donör yok" deme
+- Önden/tepeden fotoğraflarda "donör iyi görünüyor" DEME - göremezsin
+- Donör yoksa nazikçe "Ense bölgenizi de görebilir miyim?" de
+```
+
+---
+
+### Düzeltme 3: Donör Kontrolü Mantığı
+
+**Mevcut Problem:** AI ön fotoğrafta "donör bölgeniz iyi görünüyor" diyor (güven kırıcı)
+
+**Çözüm:** Fotoğraf açısını tespit edip ona göre yorum yap:
+- ÖN foto → Saçlı bölge analizi yap, donör hakkında yorum YAPMA
+- TEPE foto → Dökülme alanı analizi, donör hakkında yorum YAPMA  
+- ENSE foto → Donör kalitesi değerlendir
+
+---
+
+## 📋 Uygulama Sırası
+
+| # | Node | Değişiklik |
+|---|------|------------|
+| 1 | `Build Chat Prompt` | Satış hunisini yumuşat, 2'li soru yapısı |
+| 2 | `Multi-Image Vision` | Toleranslı fotoğraf değerlendirme |
+
