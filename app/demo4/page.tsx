@@ -3,34 +3,20 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 
 // ===== CLINIOLABS METABALL LOGO (GRID SYSTEM) =====
-// 
-// 6x6 Grid Sistemi (600x600 Canvas)
-// 1 Birim = 100px
-// Kareler = 2x2 Birim (200x200px)
-// Radius = 30px
-//
-// Layout:
-// - Sol Kol: 2x6 Birim (200x600)
-// - Alt Kol: 4x2 Birim (400x200) - L'nin uzantısı
-// - Merkez Kare: (200, 200) konumunda 200x200
-// - Sağ Üst Kare: (400, 0) konumunda 200x200
+// Same logic as Demo 3
+// ...
 
 type Phase = 'idle' | 'merge' | 'launch' | 'orbit' | 'return' | 'split';
 
 const VIEWBOX_SIZE = 800;
-const ORIGIN = { x: 400, y: 400 };
-const ORBIT_RADIUS = 566; // Viewbox köşesine temas (400 * sqrt(2))
+const ORBIT_RADIUS = 566;
 
 const SQUARE_SIZE = 200;
 const SQUARE_RADIUS = 0;
 
-// Grid Guide (800x800) ve Orijinal Boşluk Hizalaması:
-// Merkez Kare: 230, 230 (L-body ile flush olması için)
 const CENTER_SQUARE = { x: 300, y: 300 };
-// Sağ Üst: 530, 30 (L-body'nin üst koluyla hizalı)
 const TOP_RIGHT_SQUARE = { x: 600, y: 0 };
 
-// Orijinal L-Gövde Path (color.svg'den birebir - Scale 1x):
 const MAIN_L_PATH = "M114.99,400.17c-8.26,0-14.99-6.72-14.99-14.99v-60.05c0-13.81-11.19-25-25-25H14.99c-8.26,0-14.99-10.09-14.99-22.48V115.03c0-8.26,6.72-14.99,14.99-14.99h60.01c13.81,0,25-11.19,25-25V14.99c0-8.26,6.72-14.99,14.99-14.99h120.02c8.26,0,14.99,6.72,14.99,14.99v70.07c0,8.26-6.72,14.99-14.99,14.99h-110.01c-13.81,0-25,11.19-25,25v150.09c0,13.81,11.19,25,25,25h150c13.81,0,25-11.19,25-25v-110.08c0-8.26,6.72-14.99,14.99-14.99h70.02c8.26,0,14.99,6.72,14.99,14.99v120.09c0,8.26-6.72,14.99-14.99,14.99h-60.01c-13.81,0-25,11.19-25,25v60.05c0,8.4-9.11,14.99-20.74,14.99H114.99Z";
 
 const CENTER_SQUARE_CENTER = {
@@ -42,7 +28,6 @@ const TOP_RIGHT_SQUARE_CENTER = {
     y: TOP_RIGHT_SQUARE.y + SQUARE_SIZE / 2,
 };
 
-// Bezier Curve Helper
 function getCubicBezierPoint(t: number, p0: number, p1: number, p2: number, p3: number) {
     const k = 1 - t;
     return (
@@ -53,30 +38,25 @@ function getCubicBezierPoint(t: number, p0: number, p1: number, p2: number, p3: 
     );
 }
 
-// Animation Constants
 const LAUNCH_START = { x: 600, y: 0 };
-const LAUNCH_END = { x: 400, y: -166 }; // Top of Orbit
+const LAUNCH_END = { x: 400, y: -166 };
 const ORBIT_CENTER = { x: 400, y: 400 };
 
-// Bezier Control Points for Launch (Rocket-like curve)
-const LAUNCH_CP1 = { x: 600, y: -100 }; // Start going UP
-const LAUNCH_CP2 = { x: 500, y: -166 }; // Approach horizontal
+const LAUNCH_CP1 = { x: 600, y: -100 };
+const LAUNCH_CP2 = { x: 500, y: -166 };
 
-// Orbit End Point (after 270 deg from Top) -> Right Side
 const ORBIT_END = { x: 966, y: 400 };
 
-// Bezier Control Points for Return (Soft landing)
-const RETURN_CP1 = { x: 966, y: 100 }; // Leave orbit going UP (Stronger momentum with longer handle)
-const RETURN_CP2 = { x: 600, y: 100 }; // Approach target from below
+const RETURN_CP1 = { x: 966, y: 100 };
+const RETURN_CP2 = { x: 600, y: 100 };
 
 interface MetaballLogoProps {
     size?: number;
     autoPlay?: boolean;
-    showPhaseIndicator?: boolean;
 }
 
 export function MetaballLogo({
-    size = 400, // Ekranda görünecek boyut
+    size = 400,
     autoPlay = true,
 }: MetaballLogoProps) {
     const [phase, setPhase] = useState<Phase>('idle');
@@ -98,28 +78,22 @@ export function MetaballLogo({
 
     const animationRef = useRef<number>(0);
     const startTimeRef = useRef<number>(0);
-    const [bridgeOpacity, setBridgeOpacity] = useState(1); // Köprü görünürlüğü
+    const [bridgeOpacity, setBridgeOpacity] = useState(1);
 
-    // Filter params
-    const blur = 30;
-    const alpha = 50;
-    const shift = -18;
-    const gooFilterId = "goo";
+    const gooFilterId = "goo-demo4"; // Unique ID for this page
 
     const TIMINGS = {
         idle: 2000,
         merge: 700,
-        launch: 1350, // Calculated for 445px/s orbit match
+        launch: 1350,
         orbit: 8000,
-        return: 2500, // Calculated for 445px/s braking
+        return: 2500,
         split: 700,
     };
 
     const easeInQuart = (t: number) => t * t * t * t;
     const easeInQuad = (t: number) => t * t;
     const easeOutQuad = (t: number) => t * (2 - t);
-    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3); // Softer easing
 
     const update = useCallback((time: number) => {
         if (!startTimeRef.current) startTimeRef.current = time;
@@ -136,13 +110,10 @@ export function MetaballLogo({
             const t = Math.min(elapsed / TIMINGS.merge, 1);
             const ease = easeInQuart(t);
 
-            // Merge destination: Center move towards Top Right
             const tx = (TOP_RIGHT_SQUARE.x - CENTER_SQUARE.x) * ease;
             const ty = (TOP_RIGHT_SQUARE.y - CENTER_SQUARE.y) * ease;
 
             setCenterState(prev => ({ ...prev, x: tx, y: ty, scale: 1 - 0.2 * ease }));
-
-            // Merge sırasında köprüyü yavaşça kaybet
             setBridgeOpacity(1 - ease);
 
             if (t >= 1) {
@@ -151,13 +122,11 @@ export function MetaballLogo({
             }
         } else if (phase === 'launch') {
             const t = Math.min(elapsed / TIMINGS.launch, 1);
-            const ease = easeInQuad(t); // Match orbital velocity at end
+            const ease = easeInQuad(t);
 
-            // Bezier Path Movement
             const bx = getCubicBezierPoint(ease, LAUNCH_START.x, LAUNCH_CP1.x, LAUNCH_CP2.x, LAUNCH_END.x);
             const by = getCubicBezierPoint(ease, LAUNCH_START.y, LAUNCH_CP1.y, LAUNCH_CP2.y, LAUNCH_END.y);
 
-            // Relatif hareket (TopRightSquare başlangıç noktasına göre ne kadar kaymalı)
             const tx = bx - TOP_RIGHT_SQUARE.x;
             const ty = by - TOP_RIGHT_SQUARE.y;
 
@@ -165,11 +134,9 @@ export function MetaballLogo({
                 ...prev,
                 x: tx,
                 y: ty,
-                borderRadius: SQUARE_RADIUS + (SQUARE_SIZE / 2 - SQUARE_RADIUS) * ease, // Circle Morph
-                scale: 1 - 0.5 * ease // Shrink
+                borderRadius: SQUARE_RADIUS + (SQUARE_SIZE / 2 - SQUARE_RADIUS) * ease,
+                scale: 1 - 0.5 * ease
             }));
-
-            // Center square should disappear (merge into rocket)
             setCenterState(prev => ({ ...prev, opacity: 0 }));
 
             if (t >= 1) {
@@ -178,13 +145,10 @@ export function MetaballLogo({
             }
         } else if (phase === 'orbit') {
             const t = Math.min(elapsed / TIMINGS.orbit, 1);
-
-            // Fixed Path: Start from Top (-90 deg), Go CCW 270 deg
-            const startAngle = -Math.PI / 2; // -90 deg (Top)
-            const totalTravel = -Math.PI * 3.5; // 1 Full Lap + 270 deg (Total 630 deg)
+            const startAngle = -Math.PI / 2;
+            const totalTravel = -Math.PI * 3.5;
             const currentAngle = startAngle + totalTravel * t;
 
-            // Orbit Position
             const ox = Math.cos(currentAngle) * ORBIT_RADIUS;
             const oy = Math.sin(currentAngle) * ORBIT_RADIUS;
 
@@ -196,18 +160,14 @@ export function MetaballLogo({
 
             setTopRightState(prev => ({ ...prev, x: tx, y: ty }));
 
-            // Center Square stays hidden during orbit
-            // setCenterState is removed to prevent ghost movement
-
             if (t >= 1) {
                 setPhase('return');
                 startTimeRef.current = time;
             }
         } else if (phase === 'return') {
             const t = Math.min(elapsed / TIMINGS.return, 1);
-            const ease = easeOutQuad(t); // Match orbital velocity at start, brake to stop
+            const ease = easeOutQuad(t);
 
-            // Bezier Path Movement
             const bx = getCubicBezierPoint(ease, ORBIT_END.x, RETURN_CP1.x, RETURN_CP2.x, LAUNCH_START.x);
             const by = getCubicBezierPoint(ease, ORBIT_END.y, RETURN_CP1.y, RETURN_CP2.y, LAUNCH_START.y);
 
@@ -218,11 +178,9 @@ export function MetaballLogo({
                 ...prev,
                 x: tx,
                 y: ty,
-                borderRadius: SQUARE_SIZE / 2 - (SQUARE_SIZE / 2 - SQUARE_RADIUS) * ease, // Morph back to Square
-                scale: 0.5 + (1 - 0.5) * ease // Grow back
+                borderRadius: SQUARE_SIZE / 2 - (SQUARE_SIZE / 2 - SQUARE_RADIUS) * ease,
+                scale: 0.5 + (1 - 0.5) * ease
             }));
-
-            // Keep Center hidden until landing
             setCenterState(prev => ({ ...prev, opacity: 0 }));
 
             if (t >= 1) {
@@ -233,7 +191,6 @@ export function MetaballLogo({
             const t = Math.min(elapsed / TIMINGS.split, 1);
             const ease = 1 - Math.pow(1 - t, 4);
 
-            // Calculate start position (Merged state) based on constants
             const startX = TOP_RIGHT_SQUARE.x - CENTER_SQUARE.x;
             const startY = TOP_RIGHT_SQUARE.y - CENTER_SQUARE.y;
 
@@ -241,16 +198,15 @@ export function MetaballLogo({
                 x: startX * (1 - ease),
                 y: startY * (1 - ease),
                 scale: 0.8 + 0.2 * ease,
-                opacity: 1, // Re-appear
+                opacity: 1,
             });
 
-            // Köprüyü geri getir (Gooey effect for splitting)
-            // Hızlıca görünür olmalı (Hareketin ilk %25'inde tam opacity)
+            // Faster bridge appearance
             setBridgeOpacity(Math.min(ease * 4, 1));
 
             if (t >= 1) {
                 setPhase('idle');
-                setBridgeOpacity(1); // Idle'a dönünce köprüyü geri getir
+                setBridgeOpacity(1);
                 startTimeRef.current = time;
             }
         }
@@ -278,25 +234,17 @@ export function MetaballLogo({
                 className="overflow-visible"
             >
                 <defs>
-                    {/* Grid Pattern */}
-                    <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-                        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                    </pattern>
-
-                    {/* Metaball Filtresi */}
                     <filter id={gooFilterId}>
                         <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur" />
                         <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 50 -24" result="goo" />
                         <feComposite in="SourceGraphic" in2="goo" operator="atop" />
                     </filter>
 
-                    <linearGradient id="logoGradient" gradientUnits="userSpaceOnUse" x1="-300" y1="-300" x2="1100" y2="1100">
+                    <linearGradient id="logoGradient-demo4" gradientUnits="userSpaceOnUse" x1="-300" y1="-300" x2="1100" y2="1100">
                         <stop offset="0%" stopColor="#fd2d6a" />
                         <stop offset="33%" stopColor="#fea52d" />
                         <stop offset="66%" stopColor="#19a8fa" />
                         <stop offset="100%" stopColor="#f979d0" />
-
-                        {/* Gradient Rotasyonu (Hareket) */}
                         <animateTransform
                             attributeName="gradientTransform"
                             type="rotate"
@@ -307,10 +255,9 @@ export function MetaballLogo({
                         />
                     </linearGradient>
 
-                    <mask id="metaball-mask">
+                    <mask id="metaball-mask-demo4">
                         <rect width="100%" height="100%" fill="black" />
-                        <g filter="url(#goo)">
-                            {/* Bridge (Köprü) - Maske için Beyaz */}
+                        <g filter={`url(#${gooFilterId})`}>
                             <rect
                                 x={380}
                                 y={215}
@@ -324,8 +271,6 @@ export function MetaballLogo({
                                     transformOrigin: "center center"
                                 }}
                             />
-
-                            {/* Merkez Kare - Maske için Beyaz */}
                             <rect
                                 x={CENTER_SQUARE.x}
                                 y={CENTER_SQUARE.y}
@@ -339,8 +284,6 @@ export function MetaballLogo({
                                     opacity: centerState.opacity,
                                 }}
                             />
-
-                            {/* Sağ Üst Kare - Maske için Beyaz */}
                             <rect
                                 x={TOP_RIGHT_SQUARE.x}
                                 y={TOP_RIGHT_SQUARE.y}
@@ -358,54 +301,51 @@ export function MetaballLogo({
                     </mask>
                 </defs>
 
-                {/* Statik Katman: L Gövdesi */}
                 <path
                     d={MAIN_L_PATH}
-                    fill="url(#logoGradient)"
+                    fill="url(#logoGradient-demo4)"
                     className="transition-all duration-300"
                     transform="scale(2)"
                 />
 
-                {/* Dinamik Katman: Metaball Güzelliği */}
-                {/* Dinamik Katman: Maskelenmiş Global Gradient Rect */}
                 <rect
                     x="-300"
                     y="-300"
                     width="1400"
                     height="1400"
-                    fill="url(#logoGradient)"
-                    mask="url(#metaball-mask)"
+                    fill="url(#logoGradient-demo4)"
+                    mask="url(#metaball-mask-demo4)"
                 />
-
-                {/* Debug Grid Lines */}
-                <rect width="800" height="800" fill="url(#grid)" />
-                <rect width="800" height="800" fill="none" stroke="rgba(255,0,0,0.3)" strokeWidth="2" />
             </svg>
 
-            {/* Debug Info */}
-            <div className="text-xs font-mono text-white/50 bg-black/20 p-4 rounded-lg flex flex-col gap-1">
-                <div>Phase: <span className="text-blue-400 uppercase">{phase}</span></div>
-                <div>System: 400x400 Original ViewBox</div>
-                <div>Unit: 85px Precise Mesh</div>
+            <div className="text-xs font-mono text-slate-500 bg-white/80 p-4 rounded-lg flex flex-col gap-1 border border-slate-200 shadow-sm backdrop-blur-sm">
+                <div>Phase: <span className="text-blue-600 font-bold uppercase">{phase}</span></div>
+                <div>Background: Acernity Grid (Light)</div>
             </div>
         </div>
     );
 }
 
 // ===== DEMO PAGE =====
-export default function Demo3Page() {
+export default function Demo4Page() {
     return (
-        <div className="min-h-screen bg-[#08080a]">
-            <div className="text-center pt-8 pb-3">
-                <h1 className="text-white text-2xl font-bold tracking-tight">
-                    Cliniolabs Metaball Logo (Experimental Orbit)
+        <div className="relative min-h-screen w-full bg-white flex flex-col items-center justify-center overflow-hidden">
+            {/* Grid Pattern Background */}
+            <div className="absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-[size:40px_40px]">
+                {/* Radial Gradient Mask for softness */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_50%,transparent_0%,white_100%)] pointer-events-none" />
+            </div>
+
+            <div className="relative z-10 text-center -mt-20 mb-10">
+                <h1 className="text-slate-900 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                    Cliniolabs Logo
                 </h1>
-                <p className="text-white/40 mt-1.5 text-xs">
-                    600x600 Grid System Implementation - Demo 3
+                <p className="text-slate-500 mt-2 text-sm max-w-lg mx-auto">
+                    Testing on Acernity UI Style Grid Background (Light Mode)
                 </p>
             </div>
 
-            <div className="py-6 flex justify-center">
+            <div className="relative z-10 scale-90 sm:scale-100">
                 <MetaballLogo
                     size={400}
                     autoPlay={true}
