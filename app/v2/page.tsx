@@ -377,7 +377,7 @@ const POSITIONS: Record<string, string> = {
     "left-middle": "top-1/2 -left-[80%] -translate-y-1/2", // 1
     "right-bottom": "bottom-0 -right-[100%]", // 2
     "left-bottom": "bottom-0 -left-[60%]", // 3
-    "right-top": "top-0 -right-[60%]", // 4
+    "right-top": "top-[15%] -right-[60%]", // 4
     "left-top": "top-0 -left-[50%]", // 5
 };
 
