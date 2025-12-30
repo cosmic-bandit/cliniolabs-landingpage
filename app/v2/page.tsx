@@ -374,11 +374,11 @@ const SCENARIOS = [
 
 const POSITIONS: Record<string, string> = {
     // Koordinatlar (Metaball 400x400 merkezli)
-    "left-middle": "top-1/2 -left-[70%] -translate-y-1/2", // 1
-    "right-bottom": "bottom-0 -right-[60%]", // 2
-    "left-bottom": "bottom-0 -left-[50%]", // 3
-    "right-top": "top-0 -right-[50%]", // 4
-    "left-top": "top-0 -left-[40%]", // 5
+    "left-middle": "top-1/2 -left-[80%] -translate-y-1/2", // 1
+    "right-bottom": "bottom-0 -right-[100%]", // 2
+    "left-bottom": "bottom-0 -left-[60%]", // 3
+    "right-top": "top-0 -right-[60%]", // 4
+    "left-top": "top-0 -left-[50%]", // 5
 };
 
 // Typing Indicator Component
