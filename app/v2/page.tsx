@@ -482,7 +482,7 @@ function FloatingConversation() {
     const box2Content = content2;
 
     return (
-        <div className={`absolute ${posClass} z-20 flex flex-col w-[320px] pointer-events-none h-[120px] justify-end space-y-2`}>
+        <div className={`absolute ${posClass} z-20 flex flex-col w-[320px] pointer-events-none h-[120px] justify-end space-y-4`}>
 
             {/* First Message */}
             <div
