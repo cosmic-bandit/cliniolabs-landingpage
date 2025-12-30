@@ -383,7 +383,7 @@ const POSITIONS: Record<string, string> = {
 
 // Typing Indicator Component
 const TypingIndicator = () => (
-    <div className="flex gap-1 p-2 items-center justify-center h-full min-h-[44px]">
+    <div className="flex gap-1 items-center justify-center min-h-[22px]">
         <motion.div
             className="w-1.5 h-1.5 bg-gray-400 rounded-full"
             animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
