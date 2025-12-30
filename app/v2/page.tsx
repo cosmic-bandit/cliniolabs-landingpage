@@ -352,13 +352,14 @@ const SCENARIOS = [
         isAiFirst: true
     },
     {
-        // 4. Sağ Üst - Arapça (Fotoğraf)
+        // 4. Sağ Üst - Arapça (Fotoğraf) - YENİ SENARYO
         id: 4,
         position: "right-top",
         lang: "ar",
-        q: "يرجى إرسال صور واضحة من 3 زوايا مختلفة.", // AI soruyor
-        a: "photo_upload", // Özel tip
-        isAiFirst: true
+        q: "photo_upload", // Hasta sorusu: Fotoğraflar + "Yeterli mi?"
+        qText: "هل هذه الصور الثلاث كافية؟",
+        a: "نعم، تحليلنا يظهر: مستوى نوروود 3، يلزم 3500 بصيلة، تقنية DHI، جلسة واحدة.", // AI Cevabı: Analiz
+        isAiFirst: false
     },
     {
         // 5. Sol Üst - İtalyanca (Randevu)
@@ -380,9 +381,35 @@ const POSITIONS: Record<string, string> = {
     "left-top": "top-0 -left-[40%]", // 5
 };
 
+// Typing Indicator Component
+const TypingIndicator = () => (
+    <div className="flex gap-1 p-2 items-center justify-center h-full min-h-[44px]">
+        <motion.div
+            className="w-1.5 h-1.5 bg-gray-400 rounded-full"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+        />
+        <motion.div
+            className="w-1.5 h-1.5 bg-gray-400 rounded-full"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+        />
+        <motion.div
+            className="w-1.5 h-1.5 bg-gray-400 rounded-full"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+        />
+    </div>
+);
+
 function FloatingConversation() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [step, setStep] = useState(0); // 0: Hidden, 1: Message 1, 2: Message 2, 3: Wait, 4: Exit
+    const [step, setStep] = useState(0);
+    // 0: Hidden
+    // 1: Show Msg 1 (Patient/User)
+    // 2: Move Msg 1 Up + Show Typing (AI)
+    // 3: Show Msg 2 (AI) replaces Typing
+    // 4: Exit
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -391,24 +418,29 @@ function FloatingConversation() {
             // Step 1: Show First Message
             setStep(1);
 
-            // Step 2: Show Second Message (after 1s)
+            // Step 2: Slide Up & Show Typing (after 1.5s)
             timer = setTimeout(() => {
                 setStep(2);
 
-                // Step 3: Wait for read (3s)
+                // Step 3: Show AI Message (after 0.5s typing)
                 timer = setTimeout(() => {
-                    setStep(3); // Exit animation start
+                    setStep(3);
 
-                    // Step 4: Next Scenario (after exit anim 0.5s)
+                    // Step 4: Wait for reading (4s)
                     timer = setTimeout(() => {
-                        setStep(0);
-                        setCurrentIndex((prev) => (prev + 1) % SCENARIOS.length);
+                        setStep(4); // Exit animation start
 
-                        // Loop immediately
-                        timer = setTimeout(runSequence, 100);
-                    }, 500);
+                        // Step 5: Next Scenario (after exit anim 0.5s)
+                        timer = setTimeout(() => {
+                            setStep(0);
+                            setCurrentIndex((prev) => (prev + 1) % SCENARIOS.length);
 
-                }, 4000);
+                            // Loop immediately
+                            timer = setTimeout(runSequence, 100);
+                        }, 500);
+
+                    }, 4000);
+                }, 1000); // 0.5s typing + 0.5s transition buffer
             }, 1500);
         };
 
@@ -419,55 +451,67 @@ function FloatingConversation() {
 
     const scenario = SCENARIOS[currentIndex];
     const posClass = POSITIONS[scenario.position];
-    const isAiFirst = scenario.isAiFirst || false;
+    // Determine STARTING message (Box 1)
+    // Standard: Patient (Left) -> AI (Right)
+    const isAiStarting = scenario.isAiFirst || false;
 
-    // AI Bubble Style
-    const aiStyle = "bg-emerald-500/10 border-emerald-200/50 text-gray-800 rounded-2xl px-4 py-3 shadow-lg backdrop-blur-xl border text-sm max-w-[240px]";
-    // User Bubble Style
-    const userStyle = "bg-white/70 border-white/50 text-gray-800 rounded-2xl px-4 py-3 shadow-lg backdrop-blur-xl border text-sm max-w-[240px]";
+    const content1 = scenario.q === "photo_upload" ? (
+        <div className="flex flex-col gap-2">
+            <div className="flex gap-1">
+                <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden relative"><Image src="/images/layer-201.jpg" alt="Photo" fill className="object-cover" /></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden relative"><Image src="/images/layer-203.jpg" alt="Photo" fill className="object-cover" /></div>
+                <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden relative"><Image src="/images/layer-202.jpg" alt="Photo" fill className="object-cover" /></div>
+            </div>
+            {scenario.qText && <span className="text-xs">{scenario.qText}</span>}
+        </div>
+    ) : scenario.q;
 
-    const msg1Content = isAiFirst ? scenario.q : scenario.q; // First message bubble content
-    const msg2Content = isAiFirst ? scenario.a : scenario.a; // Second message bubble content
+    const content2 = scenario.a;
 
-    const msg1Style = isAiFirst ? aiStyle : userStyle;
-    const msg2Style = isAiFirst ? userStyle : aiStyle;
+    // AI Bubble Style (Right)
+    const aiStyle = "bg-emerald-500/10 border-emerald-200/50 text-gray-800 rounded-2xl px-4 py-3 shadow-lg backdrop-blur-xl border text-sm max-w-[240px] self-end origin-bottom-right";
+    // User Bubble Style (Left)
+    const userStyle = "bg-white/70 border-gray-200 text-gray-800 rounded-2xl px-4 py-3 shadow-lg backdrop-blur-xl border text-sm max-w-[240px] self-start origin-bottom-left";
 
-    const alignClass = scenario.position.includes("right") ? "items-end" : "items-start";
+    // Box 1 (First Message)
+    const box1Style = isAiStarting ? aiStyle : userStyle;
+    const box1Content = content1;
+
+    // Box 2 (Second Message / Response)
+    const box2Style = isAiStarting ? userStyle : aiStyle;
+    const box2Content = content2;
 
     return (
-        <div className={`absolute ${posClass} z-20 flex flex-col ${alignClass} gap-2 w-[300px] pointer-events-none`}>
-            {/* Message 1 */}
+        <div className={`absolute ${posClass} z-20 flex flex-col w-[320px] pointer-events-none h-[120px] justify-end space-y-2`}>
+
+            {/* First Message */}
             <div
-                className={`${msg1Style} transition-all duration-500 transform origin-bottom-${scenario.position.includes("right") ? "right" : "left"}`}
+                className={`${box1Style} transition-all duration-500`}
                 style={{
-                    opacity: step >= 1 && step < 3 ? 1 : 0,
-                    transform: step >= 1 && step < 3 ? "scale(1) translateY(0)" : "scale(0.8) translateY(10px)",
+                    opacity: step >= 1 && step < 4 ? 1 : 0,
+                    transform: step >= 1 && step < 4
+                        ? (step >= 2 ? "translateY(0)" : "translateY(0)")
+                        : "translateY(10px) scale(0.9)",
+                    marginBottom: step >= 2 ? "0px" : "0px" // Adjust if needed for slide effect
                 }}
             >
-                {msg1Content}
+                {box1Content}
             </div>
 
-            {/* Message 2 */}
+            {/* Second Message (Response or Typing) */}
             <div
-                className={`${msg2Style} transition-all duration-500 transform origin-top-${scenario.position.includes("right") ? "right" : "left"}`}
+                className={`${box2Style} transition-all duration-300`}
                 style={{
-                    opacity: step >= 2 && step < 3 ? 1 : 0,
-                    transform: step >= 2 && step < 3 ? "scale(1) translateY(0)" : "scale(0.8) translateY(-10px)",
+                    opacity: step >= 2 && step < 4 ? 1 : 0,
+                    transform: step >= 2 && step < 4 ? "translateY(0) scale(1)" : "translateY(10px) scale(0.9)",
                 }}
             >
-                {msg2Content === "photo_upload" ? (
-                    <div className="flex gap-1">
-                        <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden relative">
-                            <Image src="/images/layer-201.jpg" alt="Photo" fill className="object-cover" />
-                        </div>
-                        <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden relative">
-                            <Image src="/images/layer-203.jpg" alt="Photo" fill className="object-cover" />
-                        </div>
-                        <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden relative">
-                            <Image src="/images/layer-202.jpg" alt="Photo" fill className="object-cover" />
-                        </div>
-                    </div>
-                ) : msg2Content}
+                {step === 2 ? (
+                    <TypingIndicator />
+                ) : (
+                    step === 3 ? box2Content : null
+                )}
+                {step >= 3 && box2Content}
             </div>
         </div>
     );
