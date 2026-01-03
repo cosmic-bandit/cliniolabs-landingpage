@@ -7,19 +7,15 @@ import {
     Gear,
     RocketLaunch,
 } from "@phosphor-icons/react"
-import { motion, useScroll, useTransform, AnimatePresence, LayoutGroup } from "framer-motion"
-import { ChevronRight, Star, ArrowRight, Phone, Mail, Check, Menu, Lock, Lightbulb, Plus, X, ChevronUp, ChevronDown, Play, Pause, Linkedin, Twitter } from "lucide-react"
+import { ChevronRight, Star, ArrowRight, Phone, Mail, Check, Menu, Lock, Lightbulb } from "lucide-react"
+import { Linkedin, Twitter } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { PillTabs } from "@/components/ui/animated-tabs"
+import { AnimatedList } from "@/components/ui/animated-list"
+import { Meteors } from "@/components/ui/meteors"
 import { Button } from "@/components/ui/button"
-import { AnimatedBeam } from "@/components/ui/animated-beam"
-import { BackgroundBeams } from "@/components/ui/background-beams"
-
-import SmartPage from "../smart2/page"
-import MultilingualPage from "../multilingual/page"
-import AIScanAnimation from "../scanbeam/page"
-import DrivePage from "../drive/page"
-import BeforeAfterPage from "../before-after/page"
-import { CRMMockup, PatientSummaryMockup, PurchaseIntentMockup, AppointmentMockup } from "../crm-summary-score-randevu/page"
+import { AnimatedBeam, Circle } from "@/components/ui/animated-beam"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 // ===== METABALL LOGO COMPONENT (From Demo 4) =====
 
@@ -228,7 +224,58 @@ export function MetaballLogo({
 
 // ===== LANDING PAGE COMPONENTS =====
 
+// AnimatedBeam for Integrations
+const IntegrationsBeam = () => {
+    const containerRef = useRef<HTMLDivElement>(null)
+    const leftTopRef = useRef<HTMLDivElement>(null)
+    const leftBottomRef = useRef<HTMLDivElement>(null)
+    const centerRef = useRef<HTMLDivElement>(null)
+    const rightTop1Ref = useRef<HTMLDivElement>(null)
+    const rightTop2Ref = useRef<HTMLDivElement>(null)
+    const rightBottom1Ref = useRef<HTMLDivElement>(null)
+    const rightBottom2Ref = useRef<HTMLDivElement>(null)
 
+    return (
+        <div ref={containerRef} className="relative flex h-[500px] w-full items-center justify-between overflow-hidden rounded-lg bg-transparent p-10 max-w-4xl mx-auto">
+            <AnimatedBeam containerRef={containerRef} fromRef={leftTopRef} toRef={centerRef} curvature={0} gradientStartColor="#10b981" gradientStopColor="#34d399" />
+            <AnimatedBeam containerRef={containerRef} fromRef={leftBottomRef} toRef={centerRef} curvature={0} gradientStartColor="#10b981" gradientStopColor="#34d399" />
+            <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={rightTop1Ref} curvature={0} reverse gradientStartColor="#10b981" gradientStopColor="#34d399" />
+            <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={rightTop2Ref} curvature={0} reverse gradientStartColor="#10b981" gradientStopColor="#34d399" />
+            <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={rightBottom1Ref} curvature={0} reverse gradientStartColor="#10b981" gradientStopColor="#34d399" />
+            <AnimatedBeam containerRef={containerRef} fromRef={centerRef} toRef={rightBottom2Ref} curvature={0} reverse gradientStartColor="#10b981" gradientStopColor="#34d399" />
+
+            <div className="flex flex-col justify-center gap-16 z-10">
+                <div ref={leftTopRef} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+                    <Image src="/logos/camera.fill.svg" alt="Camera" width={32} height={32} />
+                </div>
+                <div ref={leftBottomRef} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+                    <Image src="/logos/whatsapp-8.svg" alt="WhatsApp" width={32} height={32} />
+                </div>
+            </div>
+
+            <div className="flex flex-col justify-center z-20">
+                <div ref={centerRef} className="flex h-24 w-24 items-center justify-center rounded-full border border-gray-200 bg-white shadow-2xl">
+                    <Image src="/logos/cliniolabs-logo-vertical.svg" alt="ClinicLabs Logo" width={64} height={64} className="object-contain" />
+                </div>
+            </div>
+
+            <div className="flex flex-col justify-center gap-8 z-10">
+                <div ref={rightTop1Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+                    <Image src="/logos/chatgpt-6.svg" alt="Chat GPT" width={32} height={32} />
+                </div>
+                <div ref={rightTop2Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+                    <Image src="/logos/new-logo-drive-google.svg" alt="Google Drive" width={32} height={32} />
+                </div>
+                <div ref={rightBottom1Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+                    <Image src="/logos/google-sheets-logo-icon.svg" alt="Google Sheets" width={28} height={28} />
+                </div>
+                <div ref={rightBottom2Ref} className="flex h-16 w-16 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm">
+                    <Image src="/logos/google-calendar-icon-2020-.svg" alt="Google Calendar" width={32} height={32} />
+                </div>
+            </div>
+        </div>
+    )
+}
 
 // Testimonial Card
 const TestimonialCard = ({ quote, name, role, clinic }: { quote: string; name: string; role: string; clinic: string }) => (
@@ -510,548 +557,6 @@ function FloatingConversation() {
     );
 }
 
-// ===== FEATURE TABS SECTION COMPONENTS =====
-
-interface Feature {
-    id: string
-    iconType: "plus" | "color"
-    colorGradient?: string
-    title: string
-    description: string
-    image: string
-}
-
-const features: Feature[] = [
-    {
-        id: "smart-assistant",
-        iconType: "plus",
-        title: "7/24 Akıllı Asistan",
-        description: "Gece 3'te gelen hastayı da karşılar, sorularını yanıtlar, ikna eder. Satış odaklı, empatik ve profesyonel bir danışman gibi konuşur.",
-        image: "/images/2x/cliniolabs-hasta-yonetim.webp"
-    },
-    {
-        id: "multilingual",
-        iconType: "plus",
-        title: "50+ Dil Desteği",
-        description: "Hasta hangi dilde yazarsa yazsın, AI aynı dilde yanıt verir. Türkçe, İngilizce, Arapça, Rusça ve 50'den fazla dilde akıcı iletişim.",
-        image: "/images/2x/cliniolabs-smart-filter.webp"
-    },
-    {
-        id: "ai-analysis",
-        iconType: "plus",
-        title: "AI Fotoğraf Analizi",
-        description: "Hasta fotoğraflarını saniyeler içinde analiz eder. Norwood seviyesi, greft tahmini, donör yoğunluğu ve uygun teknik önerisi sunar.",
-        image: "/images/2x/cliniolabs-foto-analiz.webp"
-    },
-    {
-        id: "drive",
-        iconType: "plus",
-        title: "Drive Entegrasyonu",
-        description: "Tüm hasta fotoğrafları otomatik olarak Google Drive'da düzenli bir arşive akar; klasörleme ve dosya isimleri süreçle uyumlu şekilde standartlaşır.",
-        image: "/images/2x/cliniolabs-oto-arsiv.webp"
-    },
-    {
-        id: "before-after",
-        iconType: "plus",
-        title: "Before/After Paylaşımı",
-        description: "Saç analizi tamamlanınca sistem, hastanın Norwood seviyesi ve saç tipine en yakın önceki vakaları Google Drive arşivinden otomatik bulur. Ardından hastaya benzer vaka bağlamında gönderir.",
-        image: "/images/2x/cliniolabs-oto-arsiv.webp"
-    },
-    {
-        id: "crm",
-        iconType: "plus",
-        title: "CRM Entegrasyonu",
-        description: "Google Sheets üzerinde her vaka için hasta paneli oluşturarak lead'lerden operasyon sonrası takibe kadar tüm statüleri tek tabloya taşır.",
-        image: "/images/2x/cliniolabs-oto-arsiv.webp"
-    },
-    {
-        id: "summary",
-        iconType: "plus",
-        title: "Hasta Özeti",
-        description: "WhatsApp ve foto analiz verilerini Google Sheets'te tek satırda toplar: İsim, yaş, önceki ekim durumu, dökülme seviyesi, genetik faktörler, ilaç kullanımı gibi temel verilerin yanında Norwood seviyesi, greft aralığı, donör kalitesi ve teknik öneri bilgilerini içeren bir özet oluşturur.",
-        image: "/images/2x/cliniolabs-oto-arsiv.webp"
-    },
-    {
-        id: "purchase-rate",
-        iconType: "plus",
-        title: "Satın Alma Niyet Skoru",
-        description: "Sohbetlerden otomatik satın alma niyet skoru çıkarır: kim sıcak, kim kararsız, kim uzaklaşıyor netleşir. Sentiment analizi de mesajların tonunu izleyip pozitif/negatif/nötr duygu analizi yapar.",
-        image: "/images/2x/cliniolabs-oto-arsiv.webp"
-    },
-    {
-        id: "appointment",
-        iconType: "plus",
-        title: "Randevu Otomasyonu",
-        description: "Google Calendar ile müsaitlik otomatik kontrol edilir; hasta doğal dille randevu alır ve gerekirse kolayca değiştirir. Daha az mesaj, daha hızlı randevu.",
-        image: "/images/2x/cliniolabs-sonuc.webp"
-    },
-]
-
-// Apple Font Styles
-const appleFont = {
-    fontFamily: '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif',
-}
-
-const appleFontTitle = {
-    ...appleFont,
-    fontSize: '17px',
-    fontWeight: 500,
-    letterSpacing: '-0.374px',
-    lineHeight: '21px',
-}
-
-const appleFontBody = {
-    ...appleFont,
-    fontSize: '17px',
-    fontWeight: 400,
-    letterSpacing: '-0.374px',
-    lineHeight: '25px',
-}
-
-// ===== VERTICAL INTEGRATIONS BEAM (Default Visual) =====
-const VerticalIntegrationsBeam = ({ paused = false }: { paused?: boolean }) => {
-    const containerRef = useRef<HTMLDivElement>(null)
-
-    const topRef = useRef<HTMLDivElement>(null)
-    const centerRef = useRef<HTMLDivElement>(null)
-    const bottom1Ref = useRef<HTMLDivElement>(null)
-    const bottom2Ref = useRef<HTMLDivElement>(null)
-    const bottom3Ref = useRef<HTMLDivElement>(null)
-    const bottom4Ref = useRef<HTMLDivElement>(null)
-
-    // FORCE UPDATE fix for scale animation layout shift
-    const [tick, setTick] = useState(0)
-    React.useEffect(() => {
-        const timer = setTimeout(() => {
-            setTick(1)
-        }, 500)
-        return () => clearTimeout(timer)
-    }, [])
-
-    return (
-        <div
-            ref={containerRef}
-            className="relative h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
-        >
-            {/* ===== ANIMATED BEAMS ===== */}
-
-            {/* Top to Center (WhatsApp → Cliniolabs) */}
-            <AnimatedBeam
-                containerRef={containerRef}
-                fromRef={topRef}
-                toRef={centerRef}
-                curvature={0}
-                vertical={true}
-                gradientStartColor="#25D366"
-                gradientStopColor="#128C7E"
-                pathWidth={2}
-                pathOpacity={0.12}
-                startXOffset={tick ? 0.001 : 0}
-                duration={4}
-                paused={paused}
-            />
-
-            {/* Center to Bottom - Simetrik fan-out */}
-            <AnimatedBeam
-                containerRef={containerRef}
-                fromRef={centerRef}
-                toRef={bottom1Ref}
-                curvature={-80}
-                vertical={true}
-                reverse={true}
-                gradientStartColor="#10b981"
-                gradientStopColor="#34d399"
-                pathWidth={2}
-                pathOpacity={0.12}
-                startXOffset={tick ? 0.001 : 0}
-                duration={5}
-                paused={paused}
-            />
-            <AnimatedBeam
-                containerRef={containerRef}
-                fromRef={centerRef}
-                toRef={bottom2Ref}
-                curvature={-30}
-                vertical={true}
-                reverse={true}
-                gradientStartColor="#10b981"
-                gradientStopColor="#34d399"
-                pathWidth={2}
-                pathOpacity={0.12}
-                startXOffset={tick ? 0.001 : 0}
-                duration={4.5}
-                paused={paused}
-            />
-            <AnimatedBeam
-                containerRef={containerRef}
-                fromRef={centerRef}
-                toRef={bottom3Ref}
-                curvature={30}
-                vertical={true}
-                reverse={true}
-                gradientStartColor="#10b981"
-                gradientStopColor="#34d399"
-                pathWidth={2}
-                pathOpacity={0.12}
-                startXOffset={tick ? 0.001 : 0}
-                duration={5.5}
-                paused={paused}
-            />
-            <AnimatedBeam
-                containerRef={containerRef}
-                fromRef={centerRef}
-                toRef={bottom4Ref}
-                curvature={80}
-                vertical={true}
-                reverse={true}
-                gradientStartColor="#10b981"
-                gradientStopColor="#34d399"
-                pathWidth={2}
-                pathOpacity={0.12}
-                startXOffset={tick ? 0.001 : 0}
-                duration={4.8}
-                paused={paused}
-            />
-
-            {/* ===== NODES - Absolute Positioning ===== */}
-
-            {/* TOP - WhatsApp */}
-            <div
-                ref={topRef}
-                className="absolute left-1/2 -translate-x-1/2 top-24 flex h-14 w-14 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md z-10"
-            >
-                <Image src="/logos/whatsapp-8.svg" alt="WhatsApp" width={28} height={28} />
-            </div>
-
-            {/* CENTER - Cliniolabs Logo */}
-            <div
-                ref={centerRef}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-24 w-24 items-center justify-center rounded-full border border-gray-200 bg-white shadow-2xl z-20"
-            >
-                <Image
-                    src="/logos/cliniolabs-logo-vertical.svg"
-                    alt="Cliniolabs Logo"
-                    width={56}
-                    height={56}
-                    className="object-contain"
-                />
-            </div>
-
-            {/* BOTTOM - 4 icons */}
-            <div
-                ref={bottom1Ref}
-                className="absolute bottom-8 left-[calc(50%-180px)] -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md z-10"
-            >
-                <Image src="/logos/chatgpt-6.svg" alt="ChatGPT" width={28} height={28} />
-            </div>
-            <div
-                ref={bottom2Ref}
-                className="absolute bottom-8 left-[calc(50%-60px)] -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md z-10"
-            >
-                <Image src="/logos/new-logo-drive-google.svg" alt="Google Drive" width={28} height={28} />
-            </div>
-            <div
-                ref={bottom3Ref}
-                className="absolute bottom-8 left-[calc(50%+60px)] -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md z-10"
-            >
-                <Image src="/logos/google-sheets-logo-icon.svg" alt="Google Sheets" width={24} height={24} />
-            </div>
-            <div
-                ref={bottom4Ref}
-                className="absolute bottom-8 left-[calc(50%+180px)] -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md z-10"
-            >
-                <Image src="/logos/google-calendar-icon-2020-.svg" alt="Google Calendar" width={26} height={28} />
-            </div>
-        </div>
-    )
-}
-
-function FeatureTab({
-    feature,
-    isActive,
-    onClick
-}: {
-    feature: Feature
-    isActive: boolean
-    onClick: () => void
-}) {
-    return (
-        <motion.div
-            layout
-            onClick={onClick}
-            className={`
-                cursor-pointer select-none
-                ${isActive
-                    ? 'bg-[#f5f5f7] rounded-[18px] p-5'
-                    : 'bg-[#f5f5f7]/60 hover:bg-[#f5f5f7] rounded-[18px] py-3 px-5'
-                }
-            `}
-            style={{
-                width: isActive ? '100%' : 'fit-content',
-            }}
-            initial={false}
-            transition={{
-                layout: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
-            }}
-        >
-            <motion.div layout="position" className="flex items-start gap-3">
-                <AnimatePresence mode="popLayout">
-                    {!isActive && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.15 }}
-                            className="flex-shrink-0 mt-0.5"
-                        >
-                            {feature.iconType === "color" ? (
-                                <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${feature.colorGradient}`} />
-                            ) : (
-                                <div className="w-5 h-5 rounded-full border-[2px] border-[#1d1d1f] flex items-center justify-center">
-                                    <Plus className="w-3 h-3 text-[#1d1d1f]" strokeWidth={3} />
-                                </div>
-                            )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                <motion.div layout="position" className="flex-1">
-                    {isActive ? (
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3, duration: 0.3 }}
-                            style={appleFontBody}
-                        >
-                            <span style={{ fontWeight: 600 }} className="text-[#1d1d1f]">
-                                {feature.title}.
-                            </span>{" "}
-                            <span className="text-[#86868b]">
-                                {feature.description}
-                            </span>
-                        </motion.p>
-                    ) : (
-                        <span
-                            style={appleFontTitle}
-                            className="text-[#1d1d1f] whitespace-nowrap"
-                        >
-                            {feature.title}
-                        </span>
-                    )}
-                </motion.div>
-            </motion.div>
-        </motion.div>
-    )
-}
-
-function ScrollIndicator({
-    className,
-    onPrev,
-    onNext,
-    canGoPrev,
-    canGoNext
-}: {
-    className?: string
-    onPrev: () => void
-    onNext: () => void
-    canGoPrev: boolean
-    canGoNext: boolean
-}) {
-    return (
-        <div className={`flex flex-col gap-2 ${className}`}>
-            <button
-                onClick={onPrev}
-                disabled={!canGoPrev}
-                className={`w-9 h-9 rounded-full border border-[#d2d2d7] bg-white flex items-center justify-center transition-all duration-200 ${canGoPrev ? 'text-[#1d1d1f] hover:border-[#86868b] cursor-pointer' : 'text-[#d2d2d7] cursor-not-allowed'}`}
-            >
-                <ChevronUp className="w-4 h-4" strokeWidth={2.5} />
-            </button>
-            <button
-                onClick={onNext}
-                disabled={!canGoNext}
-                className={`w-9 h-9 rounded-full border border-[#d2d2d7] bg-white flex items-center justify-center transition-all duration-200 ${canGoNext ? 'text-[#1d1d1f] hover:border-[#86868b] cursor-pointer' : 'text-[#d2d2d7] cursor-not-allowed'}`}
-            >
-                <ChevronDown className="w-4 h-4" strokeWidth={2.5} />
-            </button>
-        </div>
-    )
-}
-
-function FeatureTabsSection() {
-    const [isPlaying, setIsPlaying] = useState(true)
-    const [activeFeature, setActiveFeature] = useState<string | null>(null)
-    const activeFeatureData = activeFeature ? features.find(f => f.id === activeFeature) : null
-    const activeIndex = activeFeature ? features.findIndex(f => f.id === activeFeature) : -1
-
-    const handleClick = (featureId: string) => {
-        setActiveFeature(featureId)
-    }
-
-    const handlePrev = () => {
-        if (activeIndex > 0) {
-            setActiveFeature(features[activeIndex - 1].id)
-        } else if (activeIndex === -1) {
-            setActiveFeature(features[features.length - 1].id)
-        }
-    }
-
-    const handleNext = () => {
-        if (activeIndex === -1) {
-            setActiveFeature(features[0].id)
-        } else if (activeIndex < features.length - 1) {
-            setActiveFeature(features[activeIndex + 1].id)
-        }
-    }
-
-    const handleClose = () => {
-        setActiveFeature(null)
-    }
-
-    return (
-        <div className="bg-white rounded-[28px] shadow-sm overflow-hidden relative" style={appleFont}>
-            {/* Close Button */}
-            <button
-                onClick={handleClose}
-                className="absolute top-5 right-5 z-20 w-8 h-8 rounded-full bg-[#e8e8ed] hover:bg-[#d2d2d7] flex items-center justify-center text-[#1d1d1f] hover:text-[#000] transition-colors"
-            >
-                <X className="w-4 h-4" strokeWidth={2.5} />
-            </button>
-
-            {/* Content Grid */}
-            <div className="flex min-h-[600px] flex-col md:flex-row">
-
-                {/* LEFT SIDE - Tabs with Scroll Indicator */}
-                <div className="w-full md:w-[45%] p-6 md:p-10 md:pr-6 flex items-center order-2 md:order-1">
-                    <ScrollIndicator
-                        className="mr-6 flex-shrink-0"
-                        onPrev={handlePrev}
-                        onNext={handleNext}
-                        canGoPrev={activeIndex > 0 || activeIndex === -1}
-                        canGoNext={activeIndex < features.length - 1}
-                    />
-
-                    <LayoutGroup>
-                        <div className="flex flex-col gap-2.5 flex-1 max-h-[400px] md:max-h-none overflow-y-auto md:overflow-visible">
-                            {features.map((feature) => (
-                                <FeatureTab
-                                    key={feature.id}
-                                    feature={feature}
-                                    isActive={activeFeature === feature.id}
-                                    onClick={() => handleClick(feature.id)}
-                                />
-                            ))}
-                        </div>
-                    </LayoutGroup>
-                </div>
-
-                {/* RIGHT SIDE - Visual - Fixed Size 600x600 (Responsive) */}
-                <div className="flex-shrink-0 relative flex items-center justify-center md:justify-start pr-0 md:pr-[34px] py-[35px] pl-0 order-1 md:order-2 w-full md:w-auto">
-                    <div
-                        className="relative overflow-hidden mx-auto md:mx-0"
-                        style={{
-                            width: 600,
-                            height: 600,
-                            borderRadius: "48px"
-                        }}
-                    >
-                        <AnimatePresence mode="wait">
-                            {activeFeature === null ? (
-                                <motion.div
-                                    key="default"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                    className="w-full h-full"
-                                >
-                                    <VerticalIntegrationsBeam paused={!isPlaying} />
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key={activeFeature}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                    className="relative w-full h-full flex items-center justify-center overflow-hidden"
-                                >
-                                    {/* 1. TAB: SMART ASSISTANT */}
-                                    {activeFeature === "smart-assistant" ? (
-                                        <SmartPage paused={!isPlaying} />
-                                    )
-                                        /* 2. TAB: MULTILINGUAL */
-                                        : activeFeature === "multilingual" ? (
-                                            <MultilingualPage paused={!isPlaying} />
-                                        )
-                                            /* 3. TAB: AI ANALYSIS */
-                                            : activeFeature === "ai-analysis" ? (
-                                                <AIScanAnimation paused={!isPlaying} />
-                                            )
-                                                /* 4. TAB: DRIVE INTEGRATION */
-                                                : activeFeature === "drive" ? (
-                                                    <DrivePage paused={!isPlaying} />
-                                                )
-                                                    /* 5. TAB: BEFORE/AFTER */
-                                                    : activeFeature === "before-after" ? (
-                                                        <BeforeAfterPage paused={!isPlaying} />
-                                                    )
-                                                        /* 6. TAB: CRM INTEGRATION */
-                                                        : activeFeature === "crm" ? (
-                                                            <div className="transform scale-[0.9]">
-                                                                <CRMMockup />
-                                                            </div>
-                                                        )
-                                                            /* 7. TAB: PATIENT SUMMARY */
-                                                            : activeFeature === "summary" ? (
-                                                                <div className="transform scale-[0.85]">
-                                                                    <PatientSummaryMockup />
-                                                                </div>
-                                                            )
-                                                                /* 8. TAB: PURCHASE INTENT */
-                                                                : activeFeature === "purchase-rate" ? (
-                                                                    <div className="transform scale-[0.85]">
-                                                                        <PurchaseIntentMockup />
-                                                                    </div>
-                                                                )
-                                                                    /* 9. TAB: APPOINTMENT */
-                                                                    : activeFeature === "appointment" ? (
-                                                                        <div className="transform scale-[0.85]">
-                                                                            <AppointmentMockup />
-                                                                        </div>
-                                                                    )
-                                                                        /* DEFAULT: IMAGE FALLBACK FOR OTHERS */
-                                                                        : activeFeatureData?.image && (
-                                                                            <div className="relative w-[320px] h-[500px]">
-                                                                                <Image
-                                                                                    src={activeFeatureData.image}
-                                                                                    alt={activeFeatureData.title}
-                                                                                    fill
-                                                                                    className="object-contain"
-                                                                                />
-                                                                            </div>
-                                                                        )}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
-                        {/* Play/Pause Button */}
-                        <button
-                            onClick={() => setIsPlaying(!isPlaying)}
-                            className="absolute bottom-6 left-6 z-50 flex items-center justify-center w-10 h-10 bg-black/10 hover:bg-black/20 backdrop-blur-md rounded-full text-black/70 transition-all border border-black/5"
-                        >
-                            {isPlaying ? (
-                                <Pause className="w-4 h-4" fill="currentColor" />
-                            ) : (
-                                <Play className="w-4 h-4 ml-0.5" fill="currentColor" />
-                            )}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 // ===== MAIN PAGE V2 =====
 
 export default function V2Page() {
@@ -1194,145 +699,39 @@ export default function V2Page() {
             </section>
 
             {/* FEATURES SECTION */}
-            <section id="features" className="relative py-24 bg-gray-300/10 relative z-10">
+            <section id="features" className="relative py-24 bg-gray-50/50 relative z-10">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
                         <span className="section-badge">Özellikler</span>
-                        <h2 className="text-3xl md:text-4xl font-bold text-black mb-4 mt-4">Her şey tek panelde</h2>
-                        <p className="text-lg text-black max-w-2xl mx-auto">Hasta iletişiminden randevu yönetimine, tüm süreçleriniz otomatik.</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 mt-4">Her şey tek panelde</h2>
+                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">Hasta iletişiminden randevu yönetimine, tüm süreçleriniz otomatik.</p>
                     </div>
 
-                    <FeatureTabsSection />
+                    <IntegrationsBeam />
 
-                </div>
-            </section>
-
-            {/* HOW IT WORKS SECTION */}
-            <section id="how-it-works" className="relative py-24 bg-white relative z-10">
-                <div className="max-w-7xl mx-auto px-6">
-                    {/* Section Header */}
-                    <div className="text-center mb-16">
-                        <span className="section-badge">Nasıl Çalışır</span>
-                    </div>
-
-                    {/* 12 Column Grid: Responsive - flex mobile, grid desktop */}
-                    <div
-                        className="flex flex-col md:grid md:grid-cols-12 gap-4"
-                        style={{
-                            gridTemplateRows: 'repeat(6, 70px)',
-                        }}
-                    >
-
-                        {/* LEFT: Title & Text - Full width mobile, 7 cols desktop */}
-                        <div className="min-h-[300px] md:min-h-0 md:col-span-7 md:row-span-3 rounded-3xl p-8 flex flex-col justify-start">
-                            <h2 className="text-4xl md:text-5xl font-bold text-black leading-tight">
-                                Dakikalar İçinde Kurulur,<br />Saniyeler İçinde Yanıtlar
-                            </h2>
-                            <p className="text-lg text-black font-medium leading-relaxed">
-                                Karmaşık entegrasyonlar yok. WhatsApp ve Google hattınızı bağlayın, gerisini AI halletsin.
-                            </p>
-                        </div>
-
-                        {/* RIGHT TOP: Bağlantı Card - Full width mobile, 5 cols desktop */}
-                        <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
-                            <Image
-                                src="/images/2x/cliniolabs-baglantı.webp"
-                                alt="Bağlantı"
-                                fill
-                                className="object-cover z-0"
-                            />
-                            <div className="absolute inset-0 z-20 p-6 flex flex-col justify-start">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <h3 className="text-md font-semibold text-black mb-2">Bağlantı</h3>
-                                        <p className="text-xl font-semibold text-black leading-7">
-                                            Hasta WhatsApp hattınıza yazar<br />veya fotoğraf gönderir.
-                                        </p>
-                                    </div>
-                                    <div className="w-10 h-10 rounded-full bg-white/90 border-2 border-gray-900 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-lg font-bold text-black">1</span>
-                                    </div>
-                                </div>
+                    {/* Feature Cards Grid */}
+                    <div className="grid md:grid-cols-3 gap-8 mt-24">
+                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 group">
+                            <div className="h-12 w-12 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 group-hover:scale-110 transition-transform">
+                                <RocketLaunch size={24} weight="fill" />
                             </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Otopilot Yönetim</h3>
+                            <p className="text-gray-600 leading-relaxed">Siz kahvenizi içerken AI asistanınız hastaları karşılar, soruları yanıtlar ve randevuları organize eder.</p>
                         </div>
-
-                        {/* LEFT BOTTOM: Veri İşleme Card - Full width mobile, 7 cols desktop */}
-                        <div className="min-h-[400px] md:min-h-0 md:col-span-7 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
-                            <Image
-                                src="/images/2x/cliniolabs-veri-isleme.webp"
-                                alt="Veri İşleme"
-                                fill
-                                className="object-cover z-0"
-                            />
-                            <div className="absolute inset-0 z-20 p-8 flex flex-col justify-start">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <h3 className="text-md font-semibold text-black mb-3">Veri İşleme</h3>
-                                        <p className="text-xl font-semibold text-black leading-7 max-w-md">
-                                            AI motorumuz görseli analiz eder, greft hesaplar, kliniğinizin fiyat politikasına göre yanıt hazırlar.
-                                        </p>
-                                    </div>
-                                    <div className="w-10 h-10 rounded-full bg-white/90 border-2 border-gray-900 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-lg font-bold text-black">2</span>
-                                    </div>
-                                </div>
+                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 group">
+                            <div className="h-12 w-12 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition-transform">
+                                <Star size={24} weight="fill" />
                             </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Fotoğraf Analizi</h3>
+                            <p className="text-gray-600 leading-relaxed">Gönderilen fotoğrafları saniyeler içinde analiz eder, greft hesaplar ve yaklaşık fiyat teklifi sunar.</p>
                         </div>
-
-                        {/* RIGHT BOTTOM: Sonuç Card - Full width mobile, 5 cols desktop */}
-                        <div className="min-h-[350px] md:min-h-0 md:col-span-5 md:row-span-3 relative rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 border border-gray-200/40 hover:shadow-xl hover:border-emerald-200/60 transition-all duration-300">
-                            <Image
-                                src="/images/2x/cliniolabs-sonuc.webp"
-                                alt="Sonuç"
-                                fill
-                                className="object-cover z-0"
-                            />
-                            <div className="absolute inset-0 z-20 p-6 flex flex-col justify-start">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <h3 className="text-md font-semibold text-black mb-2">Sonuç</h3>
-                                        <p className="text-xl font-semibold text-black leading-7">
-                                            Hasta analizi panelinize gelir, tüm<br />veriler anında klinik panelinize işlenir.
-                                        </p>
-                                    </div>
-                                    <div className="w-10 h-10 rounded-full bg-white/90 border-2 border-gray-900 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-lg font-bold text-black">3</span>
-                                    </div>
-                                </div>
+                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 group">
+                            <div className="h-12 w-12 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 text-purple-600 group-hover:scale-110 transition-transform">
+                                <Gear size={24} weight="fill" />
                             </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Tam Entegrasyon</h3>
+                            <p className="text-gray-600 leading-relaxed">WhatsApp, Google Takvim, Sheets ve Drive ile tam uyumlu çalışır. Ekstra yazılıma gerek yok.</p>
                         </div>
-
-                    </div>
-                </div>
-            </section>
-
-            {/* TESTIMONIALS SECTION */}
-            <section id="testimonials" className="relative py-24 bg-gray-50/50 relative z-10">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <span className="section-badge">Referanslar</span>
-                        <h2 className="text-3xl md:text-4xl font-bold text-black mb-4 mt-4">Klinikler Ne Diyor?</h2>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <TestimonialCard
-                            quote="Gece 2'de gelen hastalarımızı artık kaybetmiyoruz. AI saniyeler içinde yanıt veriyor ve sabaha randevu alınmış oluyor."
-                            name="Dr. Mehmet Yılmaz"
-                            role="Klinik Direktörü"
-                            clinic="Premium Hair Clinic"
-                        />
-                        <TestimonialCard
-                            quote="Dönüşüm oranımız %40 arttı. Özellikle yabancı hastalarla iletişimde AI'ın çoklu dil desteği harika çalışıyor."
-                            name="Ayşe Demir"
-                            role="Hasta İlişkileri Müdürü"
-                            clinic="Istanbul Hair Center"
-                        />
-                        <TestimonialCard
-                            quote="Before/after eşleştirme özelliği hastalarımızı çok etkiliyor. Kendi durumlarına benzer vakaları görmek güven veriyor."
-                            name="Dr. Can Özkan"
-                            role="Baş Hekim"
-                            clinic="Aesthetic Plus"
-                        />
                     </div>
                 </div>
             </section>
@@ -1343,24 +742,6 @@ export default function V2Page() {
                     <div className="text-center mb-16">
                         <span className="section-badge">Fiyatlandırma</span>
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 mt-4">Kliniğinize uygun planı seçin,<br /> hemen başlayın.</h2>
-
-                        {/* Billing Toggle */}
-                        <div className="inline-flex items-center gap-3 mt-8">
-                            <span className="text-sm font-medium text-gray-700">Yıllık</span>
-                            <button
-                                onClick={() => setBillingPeriod(billingPeriod === "monthly" ? "yearly" : "monthly")}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${billingPeriod === "yearly" ? "bg-gray-900" : "bg-gray-300"}`}
-                            >
-                                <span
-                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${billingPeriod === "yearly" ? "translate-x-6" : "translate-x-1"}`}
-                                />
-                            </button>
-                            <span className="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
-                                <span className="bg-black text-white px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide">
-                                    İlk Hafta Ücretsiz
-                                </span>
-                            </span>
-                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
@@ -1370,7 +751,7 @@ export default function V2Page() {
                             <p className="pricing-description text-center mb-6">Küçük klinikler ve bireysel kullanıcılar için</p>
 
                             <div className="mb-6 text-center">
-                                <span className="text-5xl font-bold text-gray-900 tracking-tight">{billingPeriod === "yearly" ? "3.000" : "4.000"}₺</span>
+                                <span className="text-5xl font-bold text-gray-900 tracking-tight">4.000₺</span>
                                 <span className="text-gray-500 text-lg font-medium">/ay</span>
                             </div>
 
@@ -1406,7 +787,7 @@ export default function V2Page() {
                             <p className="pricing-description text-center mb-6">Büyüyen işletmeler için premium plan</p>
 
                             <div className="mb-6 text-center">
-                                <span className="text-5xl font-bold text-gray-900 tracking-tight">{billingPeriod === "yearly" ? "4.125" : "5.500"}₺</span>
+                                <span className="text-5xl font-bold text-gray-900 tracking-tight">5.500₺</span>
                                 <span className="text-gray-500 text-lg font-medium">/ay</span>
                             </div>
 
@@ -1442,7 +823,7 @@ export default function V2Page() {
                             <p className="pricing-description text-center mb-6">Büyük organizasyonlar için gelişmiş özelliklerle</p>
 
                             <div className="mb-6 text-center">
-                                <span className="text-5xl font-bold text-gray-900 tracking-tight">{billingPeriod === "yearly" ? "7.493" : "9.990"}₺</span>
+                                <span className="text-5xl font-bold text-gray-900 tracking-tight">9.990₺</span>
                                 <span className="text-gray-500 text-lg font-medium">/ay'dan</span>
                             </div>
 
@@ -1483,43 +864,6 @@ export default function V2Page() {
                         <div className="flex items-center justify-center gap-2 text-black text-xs font-medium uppercase tracking-wide">
                             <Lock className="w-3 h-3" />
                             <span>Tüm paketlerde: KVKK uyumlu • SSL korumalı • 7/24 sistem</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA SECTION */}
-            <section className="relative py-24 bg-white overflow-hidden relative z-10">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="bg-black rounded-[32px] px-8 py-16 md:px-16 md:py-20 text-center relative overflow-hidden">
-                        {/* Background Beams Effect */}
-                        <BackgroundBeams />
-
-                        {/* Badge */}
-                        <div className="inline-flex items-center gap-2 bg-white text-black rounded-full px-4 py-2 mb-8">
-                            <span className="text-sm font-semibold">Hemen Başlayın</span>
-                        </div>
-
-                        {/* Heading */}
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                            Kliniğinizi Dönüştürmeye<br />Hazır mısınız?
-                        </h2>
-
-                        {/* Description */}
-                        <p className="text-md text-gray-300 font-regular mb-10 max-w-2xl mx-auto">
-                            Hemen demo talep edin, dakikalar içinde sistem kurulumunu tamamlayalım. Karmaşık entegrasyonlar yok, sadece WhatsApp ve Google hesabınızı bağlayın.
-                        </p>
-
-                        {/* Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-                            <button className="inline-flex items-center justify-center gap-2 bg-white border-2 border-white text-black font-medium px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
-                                <Phone className="w-5 h-5" />
-                                Bizi Arayın
-                            </button>
-                            <button className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-white text-white font-medium px-6 py-3 rounded-lg hover:bg-white/10 transition-colors">
-                                Ücretsiz Deneyin
-                                <ArrowRight className="w-5 h-5" />
-                            </button>
                         </div>
                     </div>
                 </div>
