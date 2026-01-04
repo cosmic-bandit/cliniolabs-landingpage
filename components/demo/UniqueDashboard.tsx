@@ -97,38 +97,42 @@ function hasRisk(patient: Patient) {
 
 function labelForStage(stage: string | null) {
     switch (stage) {
-        case "GREETING": return "Hoş Geldin";
-        case "ASK_PHOTO": return "Fotoğraf Bekleniyor";
+        case "GREETING":
+        case "Q1": return "Hoş Geldin";
+        case "ASK_PHOTO":
+        case "Q2": return "Fotoğraf Bekleniyor";
         case "ANALYSIS_PENDING": return "Analiz Yapılıyor";
-        case "ANALYSIS_COMPLETE": return "Analiz Tamamlandı";
-        case "QUALIFIED": return "Uygun Aday";
-        case "PRICE_GIVEN": return "Fiyat Verildi";
-        case "APPOINTMENT_PENDING": return "Randevu Bekleniyor";
-        case "BOOKED": return "Randevu Alındı";
+        case "ANALYSIS_COMPLETE":
+        case "Q3": return "Analiz Tamamlandı";
+        case "QUALIFIED":
+        case "Q4": return "Uygun Aday";
+        case "PRICE_GIVEN":
+        case "Q5": return "Fiyat Verildi";
+        case "APPOINTMENT_PENDING":
+        case "Q6": return "Randevu Bekleniyor";
+        case "BOOKED":
+        case "Q7": return "Randevu Alındı";
         case "FOLLOW_UP": return "Takip";
         case "CLOSED": return "Kapandı";
         default: return stage || "Bilinmiyor";
     }
 }
 
-// Stage order for progress calculation
-const STAGE_ORDER = [
-    "GREETING",
-    "ASK_PHOTO",
-    "ANALYSIS_PENDING",
-    "ANALYSIS_COMPLETE",
-    "QUALIFIED",
-    "PRICE_GIVEN",
-    "APPOINTMENT_PENDING",
-    "BOOKED"
-];
+// Stage order for progress calculation (Q values map to same positions)
+const STAGE_MAP: Record<string, number> = {
+    "GREETING": 1, "Q1": 1,
+    "ASK_PHOTO": 2, "Q2": 2,
+    "ANALYSIS_PENDING": 3,
+    "ANALYSIS_COMPLETE": 4, "Q3": 4,
+    "QUALIFIED": 5, "Q4": 5,
+    "PRICE_GIVEN": 6, "Q5": 6,
+    "APPOINTMENT_PENDING": 7, "Q6": 7,
+    "BOOKED": 8, "Q7": 8
+};
 
 function stageProgress(stage: string | null): { current: number; total: number } {
-    const index = STAGE_ORDER.indexOf(stage || "GREETING");
-    return {
-        current: index >= 0 ? index + 1 : 1,
-        total: STAGE_ORDER.length
-    };
+    const current = STAGE_MAP[stage || "GREETING"] || 1;
+    return { current, total: 8 };
 }
 
 // ===== UI COMPONENTS =====
