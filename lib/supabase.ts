@@ -1,9 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Build-safe: env değişkenleri yoksa boş string kullan
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Supabase client - sadece runtime'da çalışacak
+let supabase: SupabaseClient;
+
+if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+} else {
+    // Build sırasında dummy client oluştur (kullanılmayacak)
+    supabase = createClient('https://placeholder.supabase.co', 'placeholder-key');
+}
+
+export { supabase };
 
 // Type definitions for database tables
 export interface Patient {
