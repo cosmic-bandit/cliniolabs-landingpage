@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useId } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import {
     Link as LinkIcon,
     Gear,
@@ -1170,9 +1171,9 @@ export default function V2Page() {
                             Hemen Başlayın
                             <ChevronRight className="w-4 h-4" />
                         </button>
-                        <button className="inline-flex items-center justify-center px-6 py-3 font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                            Demo Talep Edin
-                        </button>
+                        <Link href="/demo-dashboard" className="inline-flex items-center justify-center px-6 py-3 font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                            Demo Dashboard
+                        </Link>
                     </div>
                 </div>
 
