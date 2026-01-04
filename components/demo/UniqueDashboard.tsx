@@ -111,6 +111,26 @@ function labelForStage(stage: string | null) {
     }
 }
 
+// Stage order for progress calculation
+const STAGE_ORDER = [
+    "GREETING",
+    "ASK_PHOTO",
+    "ANALYSIS_PENDING",
+    "ANALYSIS_COMPLETE",
+    "QUALIFIED",
+    "PRICE_GIVEN",
+    "APPOINTMENT_PENDING",
+    "BOOKED"
+];
+
+function stageProgress(stage: string | null): { current: number; total: number } {
+    const index = STAGE_ORDER.indexOf(stage || "GREETING");
+    return {
+        current: index >= 0 ? index + 1 : 1,
+        total: STAGE_ORDER.length
+    };
+}
+
 // ===== UI COMPONENTS =====
 function KeyChip({ children, tone = "default" }: { children: React.ReactNode; tone?: "default" | "dark" | "subtle" }) {
     const toneMap = {
@@ -859,7 +879,7 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
                     <MetricCard title="Toplam Mesaj" value={metrics.messages} hint="Real-time" icon={MessageSquare} live />
                     <MetricCard title="Analiz Durumu" value={metrics.analysisComplete ? "Tamamlandı" : "Bekliyor"} icon={Activity} />
                     <MetricCard title="Satın Alma" value={`%${metrics.purchaseRate}`} hint="Satın alma olasılığı" icon={TrendingUp} />
-                    <MetricCard title="Aşama" value={labelForStage(metrics.stage)} icon={Clock} />
+                    <MetricCard title="Aşama" value={`${stageProgress(metrics.stage).current}/${stageProgress(metrics.stage).total}`} hint={labelForStage(metrics.stage)} icon={Clock} />
                 </div>
 
                 {/* List - Same as Showcase */}
