@@ -95,6 +95,22 @@ function hasRisk(patient: Patient) {
     );
 }
 
+function labelForStage(stage: string | null) {
+    switch (stage) {
+        case "GREETING": return "Hoş Geldin";
+        case "ASK_PHOTO": return "Fotoğraf Bekleniyor";
+        case "ANALYSIS_PENDING": return "Analiz Yapılıyor";
+        case "ANALYSIS_COMPLETE": return "Analiz Tamamlandı";
+        case "QUALIFIED": return "Uygun Aday";
+        case "PRICE_GIVEN": return "Fiyat Verildi";
+        case "APPOINTMENT_PENDING": return "Randevu Bekleniyor";
+        case "BOOKED": return "Randevu Alındı";
+        case "FOLLOW_UP": return "Takip";
+        case "CLOSED": return "Kapandı";
+        default: return stage || "Bilinmiyor";
+    }
+}
+
 // ===== UI COMPONENTS =====
 function KeyChip({ children, tone = "default" }: { children: React.ReactNode; tone?: "default" | "dark" | "subtle" }) {
     const toneMap = {
@@ -843,7 +859,7 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
                     <MetricCard title="Toplam Mesaj" value={metrics.messages} hint="Real-time" icon={MessageSquare} live />
                     <MetricCard title="Analiz Durumu" value={metrics.analysisComplete ? "Tamamlandı" : "Bekliyor"} icon={Activity} />
                     <MetricCard title="Satın Alma" value={`%${metrics.purchaseRate}`} hint="Satın alma olasılığı" icon={TrendingUp} />
-                    <MetricCard title="Aşama" value={metrics.stage} icon={Clock} />
+                    <MetricCard title="Aşama" value={labelForStage(metrics.stage)} icon={Clock} />
                 </div>
 
                 {/* List - Same as Showcase */}
