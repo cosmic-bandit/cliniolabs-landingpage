@@ -324,16 +324,14 @@ function PatientListRow({ patient, onOpen, messagesCount, lastMessage }: {
     );
 }
 
-// ===== CENTER MORPH SHEET (Popup with messages) =====
+// ===== CENTER MORPH SHEET (Same style as ShowcaseDashboard) =====
 function CenterMorphSheet({
     patient,
-    messages,
     onClose,
     onDelete,
     isDeleting
 }: {
     patient: Patient | null;
-    messages: Message[];
     onClose: () => void;
     onDelete: () => void;
     isDeleting: boolean;
@@ -427,99 +425,159 @@ function CenterMorphSheet({
 
                     <div className="mt-4 flex flex-wrap items-center gap-2">
                         <div className="ml-auto flex items-center gap-2 text-sm text-zinc-500">
-                            <Clock className="w-4 h-4 text-zinc-400" />
-                            <span>Real-time: <span className="font-semibold text-zinc-700">{messages.length}</span> mesaj</span>
                             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <span>Real-time güncellemeler aktif</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Body - Two Column Layout */}
-                <div className="h-[calc(100%-172px)] grid grid-cols-1 lg:grid-cols-5 gap-0">
-                    {/* Left: Info Cards */}
-                    <div className="lg:col-span-2 overflow-auto bg-zinc-50 p-5 space-y-4 border-r border-zinc-100">
+                {/* Body - Same as ShowcaseDashboard */}
+                <div className="h-[calc(100%-172px)] overflow-auto bg-zinc-50 p-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         {/* AI Summary */}
-                        <div className="bg-white rounded-2xl border border-zinc-200/70 p-4 shadow-sm">
-                            <div className="flex items-center gap-2 text-sm text-zinc-500 mb-2">
+                        <div className="lg:col-span-2 bg-white rounded-3xl border border-zinc-200/70 p-5 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+                            <div className="flex items-center gap-2 text-sm text-zinc-500">
                                 <Star className="w-4 h-4 text-zinc-400" />
                                 AI Değerlendirme Özeti
                             </div>
-                            {patient.analysis_summary ? (
-                                <div className="text-[14px] text-zinc-900 leading-relaxed">{patient.analysis_summary}</div>
-                            ) : (
-                                <div className="text-sm text-zinc-500 italic">Henüz analiz yapılmadı.</div>
-                            )}
-                            <div className="mt-4 flex items-center justify-between gap-4">
+                            <div className="mt-3 text-[15px] text-zinc-900 leading-relaxed">
+                                {patient.analysis_summary || "Henüz analiz yapılmadı. Fotoğraf gönderdiğinizde AI değerlendirmesi burada görünecek."}
+                            </div>
+                            <div className="mt-5 flex items-center justify-between gap-4">
                                 <div>
                                     <div className="text-xs text-zinc-500">Satın alma olasılığı</div>
-                                    <div className="mt-1 text-xl font-semibold text-zinc-900 tabular-nums">%{patient.purchase_rate || 0}</div>
+                                    <div className="mt-1 text-2xl font-semibold text-zinc-900 tabular-nums">%{patient.purchase_rate || 0}</div>
                                 </div>
                                 <ProgressBar value={patient.purchase_rate} />
                             </div>
                         </div>
 
-                        {/* Medical Info */}
-                        <div className="bg-white rounded-2xl border border-zinc-200/70 overflow-hidden shadow-sm">
-                            <div className="px-4 py-3 text-sm text-zinc-500 flex items-center gap-2">
-                                <Heart className="w-4 h-4 text-zinc-400" />
-                                Tıbbi Bilgiler
-                                {isRisk ? (
-                                    <span className="ml-auto text-[11px] text-orange-700 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">Risk</span>
-                                ) : (
-                                    <span className="ml-auto text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Temiz</span>
-                                )}
+                        {/* Appointment */}
+                        <div className="bg-white rounded-3xl border border-zinc-200/70 p-5 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+                            <div className="text-sm text-zinc-500 flex items-center gap-2">
+                                <Calendar className="w-6 h-6 text-zinc-400" />
+                                Randevu
                             </div>
-                            <div className="h-px bg-zinc-100" />
-                            <InfoRow label="Kronik hastalık" value={patient.chronic_disease || "Yok"} />
-                            <div className="h-px bg-zinc-100" />
-                            <InfoRow label="İlaçlar" value={patient.medications || "Yok"} />
-                            <div className="h-px bg-zinc-100" />
-                            <InfoRow label="Alerji" value={patient.allergies || "Yok"} />
-                        </div>
-
-                        {/* Delete Button */}
-                        <button
-                            onClick={onDelete}
-                            disabled={isDeleting}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 text-red-700 font-medium rounded-xl border border-red-200 transition-colors disabled:opacity-50"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                            {isDeleting ? "Siliniyor..." : "Verilerimi Sil (KVKK)"}
-                        </button>
-
-                        {/* Privacy Notice */}
-                        <div className="bg-zinc-100 rounded-xl p-3 flex items-start gap-2">
-                            <Shield className="w-4 h-4 text-zinc-400 flex-shrink-0 mt-0.5" />
-                            <p className="text-xs text-zinc-500">
-                                Bu demo sayfasıdır. Verileriniz KVKK kapsamında korunmaktadır.
-                            </p>
+                            <div className="mt-3">
+                                {patient.appointment_date ? (
+                                    <div className="text-[18px] font-semibold text-zinc-900">{formatDateTR(patient.appointment_date)}</div>
+                                ) : (
+                                    <div className="text-[16px] font-semibold text-zinc-600">Randevu yok</div>
+                                )}
+                                <div className="mt-2 text-sm text-zinc-500">Randevu durumu</div>
+                            </div>
+                            <div className="mt-5">
+                                <div className="text-xs text-zinc-500">Medikal durum</div>
+                                <div className="mt-2">
+                                    {isRisk ? (
+                                        <div className="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-sm font-semibold">
+                                            <AlertCircle className="w-4 h-4" />
+                                            Dikkat gerektiren bilgi var
+                                        </div>
+                                    ) : (
+                                        <div className="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold">
+                                            <CheckCircle2 className="w-4 h-4" />
+                                            Risk işareti yok
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Right: Messages */}
-                    <div className="lg:col-span-3 flex flex-col bg-zinc-50">
-                        <div className="px-4 py-3 border-b border-zinc-100 flex items-center justify-between bg-white">
-                            <div className="flex items-center gap-2 text-sm text-zinc-500">
-                                <MessageSquare className="w-4 h-4 text-zinc-400" />
-                                Mesaj Geçmişi
+                    {/* Medical Info Cards */}
+                    <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div className="bg-white rounded-3xl border border-zinc-200/70 overflow-hidden shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+                            <div className="px-5 py-4 text-sm text-zinc-500 flex items-center gap-2 bg-white">
+                                <Heart className="w-6 h-6 text-zinc-400" />
+                                Tıbbi Bilgiler
                             </div>
-                            <div className="flex items-center gap-1 text-xs text-emerald-600">
-                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                Canlı
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow
+                                label="Kronik hastalık"
+                                value={!patient.chronic_disease || patient.chronic_disease === "None" || patient.chronic_disease === "Yok" ? "Yok" : patient.chronic_disease}
+                                rightTag={
+                                    !patient.chronic_disease || patient.chronic_disease === "None" || patient.chronic_disease === "Yok" ? (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold">OK</span>
+                                    ) : (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-orange-50 border border-orange-200 text-orange-700 font-semibold">Noted</span>
+                                    )
+                                }
+                            />
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow
+                                label="İlaçlar"
+                                value={!patient.medications || patient.medications === "None" || patient.medications === "Yok" ? "Yok" : patient.medications}
+                                rightTag={
+                                    !patient.medications || patient.medications === "None" || patient.medications === "Yok" ? (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-zinc-50 border border-zinc-200 text-zinc-700 font-semibold">-</span>
+                                    ) : (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-zinc-50 border border-zinc-200 text-zinc-700 font-semibold">Med</span>
+                                    )
+                                }
+                            />
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow
+                                label="Alerji"
+                                value={!patient.allergies || patient.allergies === "None" || patient.allergies === "Yok" ? "Yok" : patient.allergies}
+                                rightTag={
+                                    !patient.allergies || patient.allergies === "None" || patient.allergies === "Yok" ? (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold">OK</span>
+                                    ) : (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-700 font-semibold">Alert</span>
+                                    )
+                                }
+                            />
+                        </div>
+
+                        <div className="bg-white rounded-3xl border border-zinc-200/70 overflow-hidden shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+                            <div className="px-5 py-4 text-sm text-zinc-500 flex items-center gap-2 bg-white">
+                                <Scissors className="w-6 h-6 text-zinc-400" />
+                                Geçmiş ve Uygunluk
                             </div>
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow
+                                label="Önceki operasyon"
+                                value={patient.previous_transplant ? "Var" : "Yok"}
+                                rightTag={
+                                    patient.previous_transplant ? (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-orange-50 border border-orange-200 text-orange-700 font-semibold">Noted</span>
+                                    ) : (
+                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold">OK</span>
+                                    )
+                                }
+                            />
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow label="Aile geçmişi" value={patient.family_history ? "Evet" : "Hayır"} />
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow label="Yaş" value={`${patient.age || "?"}`} />
+                            <div className="h-px bg-zinc-100" />
+                            <InfoRow
+                                label="Donör kalitesi"
+                                value={donorLabel(patient.donor_quality)}
+                                rightTag={
+                                    <span className={cn("text-[11px] px-2 py-0.5 rounded-full border font-semibold", donorTone(patient.donor_quality))}>
+                                        {patient.donor_quality || "Orta"}
+                                    </span>
+                                }
+                            />
                         </div>
-                        <div className="flex-1 overflow-auto p-4 space-y-3">
-                            {messages.length === 0 ? (
-                                <div className="flex flex-col items-center justify-center h-full text-center text-zinc-500">
-                                    <MessageSquare className="w-10 h-10 text-zinc-300 mb-3" />
-                                    <p className="text-sm">Henüz mesaj yok.</p>
-                                </div>
-                            ) : (
-                                messages.map((msg, i) => (
-                                    <MessageBubble key={msg.id} message={msg} index={i} />
-                                ))
-                            )}
+                    </div>
+
+                    {/* Footer with Delete Button */}
+                    <div className="mt-4 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-2 text-xs text-zinc-500">
+                            <Shield className="w-4 h-4 text-zinc-400" />
+                            Verileriniz KVKK kapsamında korunmaktadır.
                         </div>
+                        <button
+                            onClick={onDelete}
+                            disabled={isDeleting}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium rounded-xl border border-red-200 transition-colors disabled:opacity-50"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                            {isDeleting ? "Siliniyor..." : "Verilerimi Sil"}
+                        </button>
                     </div>
                 </div>
             </motion.div>
@@ -838,7 +896,6 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
             {showPanel && (
                 <CenterMorphSheet
                     patient={patient}
-                    messages={messages}
                     onClose={() => setShowPanel(false)}
                     onDelete={handleDelete}
                     isDeleting={isDeleting}

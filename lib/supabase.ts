@@ -40,6 +40,8 @@ export interface Patient {
     allergies: string | null;
     medications: string | null;
     dashboard_token?: string | null;
+    previous_transplant?: boolean | null;
+    family_history?: boolean | null;
 }
 
 export interface Message {
