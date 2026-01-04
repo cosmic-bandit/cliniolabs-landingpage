@@ -654,13 +654,13 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
         }
     }, [token]);
 
-    // Fetch messages by phone
+    // Fetch messages by phone (patient messages) OR null phone (AI messages)
     const fetchMessages = useCallback(async (phone: string) => {
         try {
             const { data, error } = await supabase
                 .from("messages")
                 .select("*")
-                .eq("phone", phone)
+                .or(`phone.eq.${phone},phone.is.null`)
                 .order("created_at", { ascending: true });
 
             if (error) throw error;
