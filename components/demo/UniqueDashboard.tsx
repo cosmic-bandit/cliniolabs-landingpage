@@ -654,13 +654,13 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
         }
     }, [token]);
 
-    // Fetch messages
-    const fetchMessages = useCallback(async (patientId: string) => {
+    // Fetch messages by phone
+    const fetchMessages = useCallback(async (phone: string) => {
         try {
             const { data, error } = await supabase
                 .from("messages")
                 .select("*")
-                .eq("patient_id", patientId)
+                .eq("phone", phone)
                 .order("created_at", { ascending: true });
 
             if (error) throw error;
@@ -682,10 +682,10 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
 
     // Load messages when patient is available
     useEffect(() => {
-        if (patient?.id) {
-            fetchMessages(patient.id);
+        if (patient?.phone) {
+            fetchMessages(patient.phone);
         }
-    }, [patient?.id, fetchMessages]);
+    }, [patient?.phone, fetchMessages]);
 
     // Real-time subscription for patient updates
     useEffect(() => {
@@ -717,9 +717,9 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
         };
     }, [token]);
 
-    // Real-time subscription for messages
+    // Real-time subscription for messages by phone
     useEffect(() => {
-        if (!patient?.id) return;
+        if (!patient?.phone) return;
 
         const messageChannel = supabase
             .channel("message-updates")
@@ -729,7 +729,7 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
                     event: "INSERT",
                     schema: "public",
                     table: "messages",
-                    filter: `patient_id=eq.${patient.id}`,
+                    filter: `phone=eq.${patient.phone}`,
                 },
                 (payload) => {
                     console.log("New message:", payload);
@@ -741,7 +741,7 @@ export default function UniqueDashboard({ token }: UniqueDashboardProps) {
         return () => {
             supabase.removeChannel(messageChannel);
         };
-    }, [patient?.id]);
+    }, [patient?.phone]);
 
     // Retry handler
     const handleRetry = () => {
